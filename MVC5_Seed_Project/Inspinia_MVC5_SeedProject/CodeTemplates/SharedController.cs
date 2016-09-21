@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Inspinia_MVC5_SeedProject.Models;
+using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
+namespace Inspinia_MVC5_SeedProject.CodeTemplates
+{
+    public class SharedController : Controller
+    {
+        private Entities db = new Entities();
+        
+        public ActionResult SetLocation(string city,string returnUrl)
+        {
+            var s = HttpContext.Request.UrlReferrer.LocalPath;
+            Session["City"] = city;
+            if (s == null || s== "/")
+            {
+                return RedirectToAction("Index","Home");
+            }
+            else
+            {
+                returnUrl = s.ToString();
+            }
+            //RedirectToRoute()
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
+        public string GetUserEmail()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                var user =  db.AspNetUsers.FirstOrDefault(x=>x.Id.Equals(userId));
+                if (user != null)
+                {
+                    return user.Email;
+                }
+                return "User Email";
+            }
+            return "visitor";
+        }
+        public string GetUserProfileExtension()
+
+        {
+            if (Request.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                string ext = null;
+                try {
+                     ext = db.AspNetUsers.Find(userId).dpExtension;
+                }catch(Exception e)
+                {
+                    return null;
+                }
+                if(ext == "" || ext == null)
+                {
+                    return null;
+                }
+                return ext;
+            }
+            return null;
+        }
+    }
+}

@@ -1,0 +1,160 @@
+﻿<div class="row">
+    <div class="ibox">
+        <div class="ibox-content product-box">
+            <div class="media">
+                @if (ad.category != "Services")
+                {
+                    <a href="/Details/@ad.Id/@ad.title.GenerateSlug()" class="pull-left hidden-xs">
+                        <div class="product-imitation">
+                            <div class="carouselContainer">
+                                @if (ad.AdImages.Count != 0)
+                                {
+                                    <div>
+                                        <img src="@ConfigurationManager.AppSettings["aws"]@ConfigurationManager.AppSettings["Bucketname"]/@ConfigurationManager.AppSettings["FolderName"]@(ad.Id +"_1")@ad.AdImages.FirstOrDefault().imageExtension" />
+                                    </div>
+                                }
+                                @*<span id="gallery" data-gallery=""
+                                                          data-bind="slick: images,
+                                    slickOptions: { initialSlide:0,dots:false, autoplay:true,autoplaySpeed: 1000,infinite: false,speed: 1000,fade: true,},
+                                    slickIndex: imageIndex">
+                                                    </span>*@
+                                @if (ad.AdImages.Count == 0)
+                                {
+                                    <div><h2><br /><br /><br /><br /> No Images<br /><br /><br /><br /><br /></h2></div>
+                                }
+                            </div>
+                        </div>
+                    </a>
+                }
+
+                <div class="media-body">
+                    <div class="product-desc">
+                        <span class="product-price">
+                            @if (ad.isnegotiable != "b")
+                            {
+                                if (ad.price != null)
+                                {
+                                    decimal price = ad.price.HasValue ? ad.price.Value : 0;
+                                    <text>@price.ToString("#,##0")</text><small style="font-size:13px">
+                                        Rs. @if (ad.isnegotiable == "y")
+                                        {<text>Negotiable</text> }
+                                        else if (ad.isnegotiable == "n")
+                                        { <text> <strike><strike>Negotiable</strike></strike> </text> }
+                                    </small>
+                                }
+                                else
+                                {
+                                    if (ad.category == "Jobs")
+                                    {
+                                        <text>Salary</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Price</text>
+                                    }
+                                    <text>on contact</text>
+                                }
+                            }
+                            else
+                            {
+                                if (ad.price != null)
+                                {
+                                    if (ad.maxBid != null)
+                                    {
+                                        <text>@ad.maxBid.price.ToString("#,##0")</text> <small style="font-size:13px">Rs. (current Bid) </small>
+                                    }
+                                    else
+                                    {
+                                        decimal price = ad.price.HasValue ? ad.price.Value : 0;
+                                        <text>@price.ToString("#,##0")</text> <small style="font-size:13px">Rs. (Initial Bid) </small>
+                                    }
+                                }
+                                else
+                                {
+                                    if (ad.maxBid == null)
+                                    {
+                                        <text>No bid yet</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@ad.maxBid.price.ToString("#,##0")</text> <small style="font-size:13px">Rs. (current Bid) </small>
+                                    }
+                                }
+                            }
+                        </span>
+                        <a class="product-name" href="/Details/@ad.Id/@ad.title.GenerateSlug()">@ad.title</a>
+
+
+
+                        <div class="small m-t-xs">
+                            @foreach (var tag in ad.AdTags)
+                            {
+                                <a target="_blank" href="/Tag/@tag.tagId/@tag.Tag.name.GenerateSlug()" class="btn btn-xs btn-white">@tag.Tag.name </a>
+                            }
+                        </div><br />
+                        <span>@ad.category</span> @if (ad.subcategory != null && ad.subcategory != "")
+                        { <span> > @ad.subcategory </span> }
+                        @if (ad.subsubcategory != null && ad.subsubcategory != "")
+                        {
+                            <span> > @ad.subsubcategory</span>
+                        }
+                        @if (ad.brand != null && ad.brand != "")
+                        {
+                            <span> > @ad.brand</span>
+                        }
+                        @if (ad.model != null && ad.model != "")
+                        {
+                            <span> > @ad.model</span>
+                        } @if (ad.area != null && ad.area != "")
+                        {
+                            <span> > @ad.area</span>
+                        }
+                        @if (ad.bedroom != null && ad.bedroom != "")
+                        {
+                            <span> > @ad.bedroom</span>
+                        }
+                        @if (ad.exprience != null && ad.exprience != "")
+                        {
+                            <span> > @ad.exprience</span>
+                        } @if (ad.qualification != null && ad.qualification != "")
+                        {
+                            <span> > @ad.qualification</span>
+                        }
+                        <div>@ad.description.Truncate(150)</div>
+
+                        @*<span data-bind="visible:brand"> > <span data-bind="text:brand"></span></span> <span data-bind="visible:model"> > <span data-bind="text:model"></span></span>
+
+                            <span data-bind="visible:area"><b> Area:</b> <span data-bind="text:area"> </span>sq ft </span> <span data-bind="visible:bedroom"><b> Bedroom: </b><span data-bind="text:bedroom"></span></span>
+                                                  <span data-bind="visible:exprience"><b>Experience:</b><span data-bind="if:exprience  == 'f'">Fresh Graduate</span><span data-bind="if:exprience  == 'n'">Not required</span><span data-bind="if:exprience != 'f' && exprience !='n' && exprience != ''"> <span data-bind="text:exprience"></span> year</span></span>
+                                                  <span data-bind="visible:qualification"><b>Qualification: </b><span data-bind="text:qualification"></span></span><br /><br />*@
+                        @*<div data-bind="truncatedText: description, maxTextLength: 150"></div>*@
+                        <div class="pull-right"><i class="fa fa-clock-o"></i> <span></span>@UrlHelperExtensions.Timeago(ad.time)</div>
+
+                        <div class="">
+                            @if (ad.AdsLocation != null)
+                            {
+                                if (ad.AdsLocation.City.cityName != null && ad.AdsLocation.City.cityName != "")
+                                {
+                                    <b>From:</b>
+                                    if (ad.AdsLocation.popularPlace != null)
+                                    {
+                                        if (ad.AdsLocation.popularPlace.name != "")
+                                        {
+                                            <span>@ad.AdsLocation.popularPlace.name, </span>}
+                                    }
+                                    <span> @ad.AdsLocation.City.cityName</span>
+                                }
+                            }
+                            @*<span data-bind="with:cityName"><b>From:</b></span>
+                                <span data-bind="if:popularPlace">
+                                    <span data-bind="text:popularPlace"></span>,
+                                </span>
+                                <span data-bind="text:cityName"></span>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

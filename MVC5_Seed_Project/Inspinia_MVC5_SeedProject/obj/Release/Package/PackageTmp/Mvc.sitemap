@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <!--<mvcSiteMapNode title="Category" controller="Home" action="Index" preservedRouteParameters="category" key="category">
+      <mvcSiteMapNode title="Subcategory" controller="Home" action="Index"  preservedRouteParameters="category,subcategory" key="subcategory">
+        <mvcSiteMapNode title="Lower Category" controller="Home" action="Index"  preservedRouteParameters="category,subcategory,lowercategory" key="lowercategory">
+          <mvcSiteMapNode title="Lower Category1" controller="Home" action="Index"  preservedRouteParameters="category,subcategory,lowercategory,lowercategory1" key="lowercategory1">
+            <mvcSiteMapNode title="Title" controller="Home" action="Index"  preservedRouteParameters="category,subcategory,lowercategory,lowercategory1,id,ignore" key="titleid"/>
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>-->
+    <mvcSiteMapNode title="About" controller="Home" action="About"/>
+    <mvcSiteMapNode title="Jobs" controller="Jobs" action="Index"/>
+    <mvcSiteMapNode title="Property" url="Property"/>
+    <mvcSiteMapNode title="Services" controller="Services" action="Index"/>
+    <mvcSiteMapNode title="MobilesTablets" controller="MobilesTablets" action="Index"/>
+    <mvcSiteMapNode title="Laptops-Computers" url="Laptops-Computers"/>
+    <mvcSiteMapNode title="TV-Video-Audio" url="TV-Video-Audio"/>
+    <mvcSiteMapNode title="Games" controller="Electronics" action="Games"/>
+    <mvcSiteMapNode title="Home-Appliances" url="Home-Appliances"/>
+    <mvcSiteMapNode title="Other-Electronics" url="other-electronics"/>
+    <mvcSiteMapNode title="Cameras" controller="Electronics" action="Cameras"/>
+    <mvcSiteMapNode title="Education-Learning" controller="Study" action="EducationLearning">
+      <!--<mvcSiteMapNode title="Courses" controller="Study" action="Courses"/>-->
+      <mvcSiteMapNode title="Books-Study-Material" controller="Study" action="Books"/>
+      <!--<mvcSiteMapNode title="Classes" controller="Study" action="classes"/>
+      <mvcSiteMapNode title="Home-tuitions" controller="Study" action="Hometuition"/>
+      <mvcSiteMapNode title="Others-in-Education-Learning" controller="Study" action="others"/>-->
+        
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Watches" controller="Education" action="watches"/>
+    <mvcSiteMapNode title="Clothes" controller="Education" action="clothes"/>
+    <mvcSiteMapNode title="Footwear" controller="Education" action="Footwear"/>
+    <!--<mvcSiteMapNode title="Jewellery" controller="Education" action="jewellery"/>
+    <mvcSiteMapNode title="Baby-Products" controller="Education" action="babyProducts"/>
+    <mvcSiteMapNode title="Health-and-beauty-products" controller="Education" action="healthBeautyProducts"/>
+    <mvcSiteMapNode title="Furniture" controller="Education" action="furniture"/>
+    <mvcSiteMapNode title="HouseHold" controller="Education" action="houseHold"/>
+    <mvcSiteMapNode title="Home-Decoration" controller="Education" action="HomeDecoration"/>-->
+    <mvcSiteMapNode title="Others in Fashion" url="others-in-fashion"/>
+
+    <mvcSiteMapNode title="Vehicles" controller="Vehicles" action="Index" />
+    <mvcSiteMapNode title="Cars" controller="Vehicles" action="Cars"/>
+    <mvcSiteMapNode title="Bikes" controller="Vehicles" action="Bikes"/>
+    <mvcSiteMapNode title="Commercial-Vehicles" controller="Vehicles" action="CommercialVehicles"/>
+    <!--<mvcSiteMapNode title="Vehicles-for-rent" controller="Vehicles" action="VehiclesForRent"/>-->
+    <mvcSiteMapNode title="Other-Vehicles" controller="Vehicles" action="OtherVehicles"/>
+    <mvcSiteMapNode title="Vehicles-spare-parts" controller="Vehicles" action="SpareParts"/>
+
+
+
+    <mvcSiteMapNode title="Customer Service Jobs" url="Customer-Service"/>
+    <mvcSiteMapNode title="It Jobs" controller="Jobs" action="IT"/>
+    <mvcSiteMapNode title="Online-Jobs" url="Online-Jobs"/>
+    <mvcSiteMapNode title="Marketing Jobs" url="Marketing"/>
+    <mvcSiteMapNode title="Advertising and Public Relation Jobs" url="Advertising-pr"/>
+    <mvcSiteMapNode title="Sales Jobs" url="Sales"/>
+    <mvcSiteMapNode title="Clerical and Administration Jobs" url="Clerical-Administration"/>
+    <mvcSiteMapNode title="Human Resources Jos" url="Human-resources"/>
+    <mvcSiteMapNode title="Education Jobs" url="Education"/>
+    <mvcSiteMapNode title="Hotels and Tourism" url="Hotels-Tourism"/>
+    <mvcSiteMapNode title="Accounting and Finance" url="Accounting-Finance"/>
+    <mvcSiteMapNode title="Manufacturing Jobs" url="Manufacturing"/>
+    <mvcSiteMapNode title="Part time Jobs" url="Part-time-jobs"/>
+    <mvcSiteMapNode title="Other jobs" url="other-jobs"/>
+    
+    
+    
+    <mvcSiteMapNode title="Apartment" url="Apartment"/>
+    <mvcSiteMapNode title="House" url="House"/>
+    <mvcSiteMapNode title="Plot and land" url="Plot-Land"/>
+    <mvcSiteMapNode title="Shop" url="Shop"/>
+    <mvcSiteMapNode title="Office" url="Office"/>
+    <mvcSiteMapNode title="Paying Guest and Roommates" url="pg-flatmates"/>
+    <mvcSiteMapNode title="Other commercial Places" url="Other-Commercial-Places"/>
+
+    
+    
+    <mvcSiteMapNode title="Education and Classes" url="Education-Classes"/>
+    <mvcSiteMapNode title="Web development" url="Web-Development"/>
+    <mvcSiteMapNode title="Electronics and Computer Repair" url="Electronics-Computer-Repair"/>
+    <mvcSiteMapNode title="Maids and Domestic Help" url="maids-domestic-help"/>
+    <mvcSiteMapNode title="Health and Beauty" url="Health-Beauty"/>
+    <mvcSiteMapNode title="Movers and Packers" url="Movers-Packers"/>
+    <mvcSiteMapNode title="Drivers and Taxi" url="Drivers-Taxi"/>
+    <mvcSiteMapNode title="Event Services" url="Event-Services"/>
+    <mvcSiteMapNode title="Other Services" url="Other-Services"/>
+    
+    
+    
+    <!--<mvcSiteMapNode title="Apartment" url="Apartment"/>-->
+    
+    
+    
+    
+    
+    <mvcSiteMapNode title="Pets-Animals" controller="Vehicles" action="Animals"/>
+    <!--<mvcSiteMapNode title="Bakra-for-qurbani" controller="Vehicles" action="Bakra"/>-->
+  </mvcSiteMapNode>
+  
+</mvcSiteMap>

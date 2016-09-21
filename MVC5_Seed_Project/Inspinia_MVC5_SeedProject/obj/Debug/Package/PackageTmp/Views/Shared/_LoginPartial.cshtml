@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-top-links navbar-right">
+        @*<li class="hidden-xs">
+            <a href="/Company/Create">Create Page</a>
+        </li>*@
+        <li class="hidden-xs">
+            <a href="/CreateAd">Post Ad</a>
+        </li>
+        @*<li style="padding:0px">
+            <a  href="#"><img alt="member" class="img-circle" style="height:18px;padding:0px" src="/Images/profile.jpg"></a>
+        </li>*@
+        
+        <li class="dropdown hidden-xs">
+            <a aria-expanded="false" role="button" class="dropdown-toggle" data-toggle="dropdown"><img alt="dp" @*class="img-circle"*@ style="height:18px;padding:0px" data-bind="attr:{src:loginUserProfileExt}"> @Html.Action("GetUserEmail", "Shared") <span class="caret"></span></a>
+            <ul role="menu" class="dropdown-menu">
+                <li><a href="/Search">Search Ads</a></li>
+                <li><a href="/Company/Create">Create Page</a></li>
+                <li class="divider"></li>
+                <li><a href="/User/Chat">My chat room</a></li>
+                <li><a href="/User/Index/@User.Identity.GetUserId()">Profile</a></li>
+                <li><a href="/User/Profile/@User.Identity.GetUserId()">Edit profile</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            </ul>
+        </li>
+       
+        @*<li class="hidden-xs"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+        
+    @*<li class="pull-right">
+            
+            <a class="right-sidebar-toggle">
+                <i class="fa fa-tasks"></i>
+            </a>
+        </li>*@
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-top-links navbar-right">
+        <li class="hidden-xs">
+            <a data-bind="click:loginBtn">Post Ad</a>
+        </li>
+        <li class="hidden-xs" data-bind="click:loginBtn"><a> Login &nbsp; Register</a></li>
+        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
+       
+         @*<li class="pull-right">
+            <a class="right-sidebar-toggle">
+                <i class="fa fa-tasks"></i>
+            </a>
+        </li>*@
+    </ul>
+}

@@ -1,0 +1,637 @@
+﻿@model Inspinia_MVC5_SeedProject.Models.ListViewModel
+@using System.Configuration;
+@using Inspinia_MVC5_SeedProject;
+@{
+    string url = Request.Url.AbsoluteUri;
+    Uri myUri = new Uri(url);
+    string condition = HttpUtility.ParseQueryString(myUri.Query).Get("condition");
+    string conditionTitle = "";
+    if (condition != null && condition != "")
+    {
+        if (condition == "n")
+        {
+            conditionTitle = "New ";
+        }
+        else if (condition == "u")
+        {
+            conditionTitle = "Used ";
+        }
+    }
+    string freindlyCity = Session["City"] == null ? " in Pakistan" : " in " + Session["City"].ToString();
+    if (ViewBag.category == "TV-Video-Audio")
+    {
+        ViewBag.metaDescription = "Looking for used TV? We have thousands of new and used TV's and accessories at cheap prices" + freindlyCity;
+    }else if(ViewBag.subcategory == "Games")
+    {
+        ViewBag.metaDescription = "Looking for Games? Browse thousands of Video games and console games at cheap prices" + freindlyCity + " and Enjoy!";
+    }else if(ViewBag.subcategory == "Home-Appliances")
+    {
+        ViewBag.metaDescription = "Fridge, washing machine, air conditioner, microwave oven and kitch appliances are available at cheap prices" + freindlyCity;
+    }else if(ViewBag.subcategory == "Commercial-Vehicles")
+    {
+        ViewBag.metaDescription = "Looking for bus, trucks, pickups and Trailers? Browse thousands of commercial vehciles at cheap prices" + freindlyCity + " .Largest stock of Commercial Vehicles in Pakistan. Get good condition and well maintained Commercial Vehicles for sale";
+    }else if(ViewBag.subcategory == "spare-parts")
+    {
+        ViewBag.metaDescription = "Find Auto Parts, Car Parts for sale" + freindlyCity +"'s best automotive portal. Buy & Sell used Auto Parts, Car Parts online" + freindlyCity;
+    }else if(ViewBag.category == "Pets Animals")
+    {
+        ViewBag.metaDescription = "Looking for cats, dogs, goats and other pets and animals. We have thousands of pets for sale at cheap prices" + freindlyCity;
+    }
+    ViewBag.Title = conditionTitle + (ViewBag.subcategory == null ? ViewBag.category : ViewBag.subcategory) + " " + (Session["City"] == null || Session["City"].ToString() == "All Pakistan" ? "" : " in " + Session["City"].ToString());
+}
+@if (ViewBag.category == "Pets Animals")
+{
+    @*<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <span style="margin-top:18px" class="hidden-xs pull-right">
+            </span>
+            
+                <h2> <a href="/bakra-for-qurbani"> Buy and sell animals for qurbani on dealkar.pk</a> <span class="label label-info ">New</span></h2>
+           <p>Buy and sell Bakra, Cow, Goat, camel and other qurbani animals</p>
+
+        </div>
+    </div>*@
+
+                            }
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-4 col-md-3">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Search Filters</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    @{
+                        string tags = HttpUtility.ParseQueryString(myUri.Query).Get("tags");
+                        string minPrice = HttpUtility.ParseQueryString(myUri.Query).Get("minPrice");
+                        string maxPrice = HttpUtility.ParseQueryString(myUri.Query).Get("maxPrice");
+                        string q = HttpUtility.ParseQueryString(myUri.Query).Get("q");
+                        //add summary to results
+                        <div style="display:none">
+                            <div id="q-tags">@tags</div>
+                            <div id="q-minPrice">@minPrice</div>
+                            <div id="q-maxPrice">@maxPrice</div>
+                            <div id="condition">@condition</div>
+                            <div id="category">@ViewBag.category</div>
+                        </div>
+                    }
+
+                    <form action="/@if (ViewBag.subcategory != null){<text>@StringExt.GenerateSlug(ViewBag.subcategory)</text> }
+                    else
+                    {<text>@StringExt.GenerateSlug(ViewBag.category)</text> }">
+                        @if (ViewBag.category == "Pets Animals")
+                        {
+                            <h5>Search by Category</h5>
+                            <select class="form-control" name="category" data-bind="options: availableCategories,
+                       optionsCaption: 'Select category'"></select>
+                        }
+                        <h5>Search by Price</h5>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div>
+                                    <select id="from-price" class="demo-default" name="minPrice" data-bind="options: availableMinPrices,
+                       value: selectedMinPrice,
+                       optionsCaption: 'min price'"></select>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <select id="to-price" class="demo-default" name="maxPrice" data-bind="options: availableMaxPrices,
+                       value: selectedMaxPrice,
+                       optionsCaption: 'max price'"></select>
+                            </div>
+                        </div>
+                        <h5>Search by Tags</h5>
+                        <input id="select-tag" data-bind="value:tags" name="tags" class="repositories" placeholder="Pick tags..." /><br />
+                        <button class="btn  btn-default" data-bind="click:resetFilters">Reset</button>
+                        <input class="btn btn-primary pull-right" type="submit" value="Update Results" />
+                        <br />
+                    </form>
+
+                </div>
+            </div>
+            @Html.Partial("/Views/Shared/_CreateAlert.cshtml")
+            <div class="hidden-xs">
+                <br />
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- testing-unit -->
+                <ins class="adsbygoogle "
+                     style="display:block"
+                     data-ad-client="ca-pub-3540353581324370"
+                     data-ad-slot="5192209645"
+                     data-ad-format="auto"></ins>
+                <script>
+(
+                    
+                     = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+        <div class="col-sm-8 col-md-9 col-lg-7">
+@*@if (ViewBag.subcategory == "commercial-vehicles")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Vehicles&subcategory=commercial-vehicles')}" data-style="expand-left" class=" pull-right btn btn-danger">Sell your Commercial Vehicle</a>
+}
+else if (ViewBag.subcategory == "vehicles-for-rent")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Vehicles&subcategory=vehicles-for-rent')}" data-style="expand-left" class=" pull-right btn btn-danger">Add your vehicle for rent</a>
+}
+else if (ViewBag.subcategory == "other-vehicles")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Vehicles&subcategory=other-vehicles')}" data-style="expand-left" class=" pull-right btn btn-danger">Sell your Vehicle</a>
+}
+else if (ViewBag.subcategory == "spare-parts")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Vehicles&subcategory=spare-parts')}" data-style="expand-left" class=" pull-right btn btn-danger">Sell Spare parts</a>
+}
+else if (ViewBag.subcategory == "TV - Video - Audio")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Electronics&subcategory=TV - Video - Audio')}" data-style="expand-left" class="pull-right btn btn-danger">Sell TV - Video - Audio</a>
+}
+else if (ViewBag.subcategory == "Games")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Electronics&subcategory=Games')}" data-style="expand-left" class="pull-right btn btn-danger">Sell Games</a>
+}
+else if (ViewBag.subcategory == "Home-Appliances")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Electronics&subcategory=Home-Appliances')}" data-style="expand-left" class="pull-right btn btn-danger">Sell Home Appliances</a>
+}
+else if (ViewBag.subcategory == "Other-Electronics")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Electronics&subcategory=Other-Electronics')}" data-style="expand-left" class="pull-right btn btn-danger">Sell Electronics</a>
+}
+else if (ViewBag.subcategory == "Pets Animals")
+{
+    <a data-bind="click:function(){ return createAd('/Home/Create?category=Animals')}" data-style="expand-left" class="pull-right btn btn-danger">Sell your Pet</a>
+}*@           
+                    @if (Model != null)
+                    { <text> @Model.ItemsCount  results found
+                    @foreach (var ad in Model.Items)
+                    {
+                        <div class="row">
+                            <div class="ibox">
+                                <div class="ibox-content product-box">
+                                    <div class="media">
+                                        @if (ad.category != "Services")
+                                        {
+                                            <a href="/Details/@ad.Id/@ad.title.GenerateSlug()" class="pull-left">
+                                                <div class="product-imitation">
+                                                    <div class="carouselContainer">
+                                                        @if (ad.AdImages.Count != 0)
+                                                        {
+                                                            <div>
+                                                                <img src="@ConfigurationManager.AppSettings["aws"]@ConfigurationManager.AppSettings["Bucketname"]/@ConfigurationManager.AppSettings["FolderName"]@(ad.Id +"_1")@ad.AdImages.FirstOrDefault().imageExtension" />
+                                                            </div>
+                                                        }
+                                                        @if (ad.AdImages.Count == 0)
+                                                        {
+                                                            <div><h2><br /><br /><span class="hidden-xs"><br /><br /></span> No Images<br /><br /><br /><br /><br /></h2></div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        }
+
+                                        <div class="media-body">
+                                            <div class="product-desc">
+                                                <span class="product-price">
+                                                    @if (ad.isnegotiable != "b")
+                                                    {
+                                                        if (ad.price != null)
+                                                        {
+                                                            decimal price = ad.price.HasValue ? ad.price.Value : 0;
+                                                            <text>@price.ToString("#,##0")</text><small style="font-size:13px">
+                                                                Rs@*. @if (ad.isnegotiable == "y")
+                                                                    {<text>Negotiable</text> }
+                                                                    else if (ad.isnegotiable == "n")
+                                                                    { <text> <strike><strike>Negotiable</strike></strike> </text> }*@
+                                                            </small>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ad.category == "Jobs")
+                                                            {
+                                                                <text>Salary</text>
+                                                            }
+                                                            else
+                                                            {
+                                                                <text>Price</text>
+                                                            }
+                                                            <text>on contact</text>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ad.price != null)
+                                                        {
+                                                            if (ad.maxBid != null)
+                                                            {
+                                                                <text>@ad.maxBid.price.ToString("#,##0")</text> <small style="font-size:13px">Rs. (current Bid) </small>
+                                                            }
+                                                            else
+                                                            {
+                                                                decimal price = ad.price.HasValue ? ad.price.Value : 0;
+                                                                <text>@price.ToString("#,##0")</text> <small style="font-size:13px">Rs. (Initial Bid) </small>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ad.maxBid == null)
+                                                            {
+                                                                <text>No bid yet</text>
+                                                            }
+                                                            else
+                                                            {
+                                                                <text>@ad.maxBid.price.ToString("#,##0")</text> <small style="font-size:13px">Rs. (current Bid) </small>
+                                                            }
+                                                        }
+                                                    }
+                                                </span><br />
+                                                <a class="product-name" href="/Details/@ad.Id/@ad.title.GenerateSlug()">@ad.title</a>
+
+
+                                                <span class="hidden-xs">
+                                                    <div class="small m-t-xs">
+                                                        @foreach (var tag in ad.AdTags)
+                                                        {
+                                                            <span @*target="_blank" href="/Tag/@tag.tagId/@tag.Tag.name.GenerateSlug()"*@ class="btn btn-xs btn-white">@tag.Tag.name </span>
+                                                        }
+                                                    </div><br />
+                                                    <span>@ad.category</span> @if (ad.subcategory != null && ad.subcategory != "")
+                                                    { <span> > @ad.subcategory </span> }
+                                                    @if (ad.subsubcategory != null && ad.subsubcategory != "")
+                                                    {
+                                                        <span> > @ad.subsubcategory</span>
+                                                    }
+                                                    @if (ad.brand != null && ad.brand != "")
+                                                    {
+                                                        <span> > @ad.brand</span>
+                                                    }
+                                                    @if (ad.model != null && ad.model != "")
+                                                    {
+                                                        <span> > @ad.model</span>
+                                                    } @if (ad.area != null && ad.area != "")
+                                                    {
+                                                        <span> > @ad.area</span>
+                                                    }
+                                                    @if (ad.bedroom != null && ad.bedroom != "")
+                                                    {
+                                                        <span> > @ad.bedroom</span>
+                                                    }
+                                                    @if (ad.exprience != null && ad.exprience != "")
+                                                    {
+                                                        <span> > @ad.exprience</span>
+                                                    } @if (ad.qualification != null && ad.qualification != "")
+                                                    {
+                                                        <span> > @ad.qualification</span>
+                                                    }
+
+                                                    <div>@ad.description.Truncate(150)</div>
+                                                </span>
+                                                @*<span data-bind="visible:brand"> > <span data-bind="text:brand"></span></span> <span data-bind="visible:model"> > <span data-bind="text:model"></span></span>
+
+                                                    <span data-bind="visible:area"><b> Area:</b> <span data-bind="text:area"> </span>sq ft </span> <span data-bind="visible:bedroom"><b> Bedroom: </b><span data-bind="text:bedroom"></span></span>
+                                                                          <span data-bind="visible:exprience"><b>Experience:</b><span data-bind="if:exprience  == 'f'">Fresh Graduate</span><span data-bind="if:exprience  == 'n'">Not required</span><span data-bind="if:exprience != 'f' && exprience !='n' && exprience != ''"> <span data-bind="text:exprience"></span> year</span></span>
+                                                                          <span data-bind="visible:qualification"><b>Qualification: </b><span data-bind="text:qualification"></span></span><br /><br />*@
+                                                @*<div data-bind="truncatedText: description, maxTextLength: 150"></div>*@
+                                                <div class="pull-right"><i class="fa fa-clock-o"></i> <span></span>@UrlHelperExtensions.Timeago(ad.time)</div>
+
+                                                <div class="">
+                                                    @if (ad.AdsLocation != null)
+                                                    {
+                                                        if (ad.AdsLocation.City.cityName != null && ad.AdsLocation.City.cityName != "")
+                                                        {
+                                                            <b class="hidden-xs">From:</b>
+                                                            if (ad.AdsLocation.popularPlace != null)
+                                                            {
+                                                                if (ad.AdsLocation.popularPlace.name != "")
+                                                                {
+                                                                    <span>@ad.AdsLocation.popularPlace.name, </span>}
+                                                            }
+                                                            <span> @ad.AdsLocation.City.cityName</span>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+                    </text>
+                    }
+                    else
+                    {<text>No results found. Please try something else</text>}
+            
+            <!-- pager -->
+            @{ string actionLink = (ViewBag.subcategory == null ? StringExt.GenerateSlug(ViewBag.category) : StringExt.GenerateSlug(ViewBag.subcategory));}
+
+            @if (Model.Pager.EndPage > 1)
+            {
+                <br />
+                <ul class="pagination">
+                    @if (Model.Pager.CurrentPage > 1)
+                {
+                        <li>
+                            <a href="@Url.RouteUrl(actionLink, new { minPrice = minPrice, maxPrice = maxPrice, tags = tags, condition = condition })">First Page</a>
+                        </li>
+                        <li>
+                            <a href="@Url.RouteUrl(actionLink, new { minPrice = minPrice, maxPrice = maxPrice, tags = tags, condition = condition, page = Model.Pager.CurrentPage - 1 })">Previous</a>
+                        </li>
+                    }
+
+                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                {
+                        <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                            <a href="@Url.RouteUrl(actionLink, new { minPrice = minPrice, maxPrice = maxPrice, tags = tags, condition = condition, page =page })">@page.ToString()</a>
+
+                        </li>
+                    }
+
+                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                {
+                        <li>
+                            <a href="@Url.RouteUrl(actionLink, new { minPrice = minPrice, maxPrice = maxPrice, tags = tags, condition = condition, page = Model.Pager.CurrentPage + 1 })">Next</a>
+                        </li>
+                        @*<li>
+                            <a href="@Url.RouteUrl(actionLink, new { minPrice = minPrice, maxPrice = maxPrice, tags = tags, condition = condition, page = Model.Pager.TotalPages })">Last</a>
+                        </li>*@
+                    }
+                </ul>
+
+                <br /><br />
+            }
+            <div class="visible-xs">
+                <br />
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- ad-detail-page -->
+                <ins class="adsbygoogle example_responsive_1"
+                     style="display:block"
+                     data-ad-client="ca-pub-3540353581324370"
+                     data-ad-slot="3103703247"
+                     data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                <br />
+            </div>
+        </div>
+        @*<div class="col-lg-3"></div>*@
+    </div>
+</div>
+<style>
+    .example .pagination > li > a,
+    .example .pagination > li > span {
+        border: 1px solid #1ab394;
+    }
+
+    .pagination > li.active > a {
+        background: #1ab394;
+        color: #fff;
+    }
+
+    .carouselContainer {
+        overflow: hidden;
+        //height:350px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #gallery {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .product-imitation {
+        margin: 0px;
+        padding: 0px;
+        width: 250px;
+        height: 250px;
+        /apply max-padding or default image;
+    }
+
+    .carouselContainer img {
+        // height: 350px;
+        width: 250px /*!important*/;
+        height: 250px;
+    }
+
+    .showAds .ibox {
+        height: 420px;
+    }
+
+    .product-price {
+        top: 0px;
+    }
+</style>
+
+@section Styles {
+
+    @Styles.Render("~/plugins/toastrStyles")
+    @Styles.Render("~/bundles/tagStyles")
+}
+
+@section Scripts{
+    @Scripts.Render("~/plugins/toastr")
+    @Scripts.Render("~/plugins/knockout")
+
+    <script src="~/Scripts/app/CreateAlert.js"></script>
+    <script>
+
+        function viewModel() {
+            SearchingLocation();
+            CreateAlert();
+           
+            ChatViewModel();
+            AccountViewModel();
+            var self = this;
+            $.ajax({
+                url: '/api/Admin/isAdmin',
+                dataType: "json",
+                contentType: "application/json",
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                    $("#from-price").selectize({
+                        create: true,
+                    });
+                    $("#to-price").selectize({
+                        create: true,
+                    });
+                    $('#select-brand').selectize();
+                    $("#to-price").selectize({
+                        create: true,
+                    });
+                    selectedMinPrice = $("#q-minPrice").text() || 0;
+                    if (selectedMinPrice) {
+                        selectedMinPrice = selectedMinPrice.split(',')[0];
+                    }
+                    selectedMaxPrice = $("#q-maxPrice").text() || 0;
+                    if (selectedMaxPrice) {
+                        selectedMaxPrice = selectedMaxPrice.split(',')[0];
+                    }
+                    $("#from-price").selectize({
+                        create: true,
+                    });
+                    if (selectedMinPrice != 0) {
+                        if ($.inArray(selectedMinPrice, availableMinPrices) == -1) {
+                            var minPrice_selectize = $("#from-price")[0].selectize;
+                            minPrice_selectize.addOption({
+                                text: selectedMinPrice,
+                                value: selectedMinPrice
+                            });
+                            minPrice_selectize.addItem(selectedMinPrice);
+                        }
+                    }
+                    if (selectedMaxPrice != 0) {
+                        if ($.inArray(selectedMaxPrice, availableMaxPrices) == -1) {
+                            var maxPrice_selectize = $("#to-price")[0].selectize;
+                            maxPrice_selectize.addOption({
+                                text: selectedMaxPrice,
+                                value: selectedMaxPrice
+                            });
+                            maxPrice_selectize.addItem(selectedMaxPrice);
+                        }
+                    }
+                }
+            });
+            var selectize_tags = $("#select-tag")[0].selectize;
+            if (q_tags != "" && q_tags != null) {
+                var q_tags_array = q_tags.split(',');
+                var selectedTags = [];
+                $.each((q_tags_array), function (i, item) { selectedTags.push(item) });
+                $.each((selectedTags), function (i, item) {
+                    selectize_tags.addOption({
+                        text: item,
+                        value: item,
+                        name: item,
+                    });
+                    selectize_tags.addItem(item);
+                });
+            }
+
+            var category = $("#category").text();
+            availableCategories = "";
+            if (category == "Pets Animals") {
+             availableCategories =   ["Dogs", "Aquariums", "Pet Food & Accessories", "Other Pets"];
+                //availableCategories = ["Dog", "Bird", "Cat", "Fish", "Farm Animals", "others", "Pet Adoption", "Pet Accessories", "Pet Food", "Pet training", "Pet Clinics"];
+            } else if (category == "Services") {
+                availableCategories = ["Computer Repair", "Home Appliance Repair", "Movers and Packers", "Drivers and Taxi", "Event Services", "Maids and Domestic help", "Education and classes", "Web Development", "other services"];
+            }
+            return self;
+        }
+        
+        var availableMinPrices = ["100000", "200000", "500000", "1000000", "1500000", "2000000", "3000000", "4000000"];
+        var selectedMinPrice = null;
+        var availableMaxPrices = ["100000", "200000", "500000", "1000000", "1500000", "2000000", "3000000", "4000000"];
+        var selectedMaxPrice = null;
+
+        selectedMinPrice = $("#q-minPrice").text() || 0;
+        if (selectedMinPrice) {
+            selectedMinPrice = selectedMinPrice.split(',')[0];
+        }
+        selectedMaxPrice = $("#q-maxPrice").text() || 0;
+        if (selectedMaxPrice) {
+            selectedMaxPrice = selectedMaxPrice.split(',')[0];
+        }
+
+        var resetFilters = function () {
+            var selectize_tags1 = $("#select-tag")[0].selectize;
+            selectize_tags1.clear();
+            var selectize_min = $("#from-price")[0].selectize;
+            selectize_min.clear();
+            var selectize_max = $("#to-price")[0].selectize;
+            selectize_max.clear();
+            minPrice = 0;
+            maxPrice = 50000;
+        }
+
+        //start assigning values
+        var q_brand = $("#q-brand").text();
+        var q_model = $("#q-model").text();
+        var condition = $("#condition").text();
+
+
+        var q_tags = $("#q-tags").text();
+        var tags = ko.observable(q_tags);
+        //set values in selectize
+
+
+        
+
+        $('#select-tag').selectize({
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            options: [],
+            maxItems: 4,
+            render: {
+                option: function (item, escape) {
+                    return '<div>' +
+                        '<span class="title">' +
+                            '<span class="name">' + escape(item.name) + '</span>' +
+
+                        '</span>' +
+                        '<span class="description">' + escape(item.info) + '</span>' +
+                        '<ul class="meta">' +
+                            '<li class="watchers"><span>' + escape(item.followers) + '</span> followers</li>' +
+                            '<li class="forks"><span>' + escape(item.questions) + '</span> times used</li>' +
+                        '</ul>' +
+                    '</div>';
+                }
+            },
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '/api/Tag/SearchTags?s=' + encodeURIComponent(query),
+                    type: 'GET',
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        callback(res.slice(0, 10));
+                    }
+                });
+            }
+        });
+        $(function () {
+            $('.ladda-button').ladda('bind', { timeout: 200000 });
+
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                preventDuplicates: true,
+                positionClass: 'toast-top-right',
+                onclick: null
+            };
+           
+            var length = $(window).width();
+            if (length < 786) { //770
+                $(".collapse-link").click();
+                $(".product-desc").css({ "padding": "0px" });
+                $(".product-price").css({ "color": "green", "background": "none" });
+            }
+            ko.applyBindings(new viewModel);
+        });
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

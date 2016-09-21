@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "ManageScraping";
+}
+
+<h2>ManageScraping</h2>
+
+@*<div class="btn btn-default " data-bind="click:runScript">Run mobile script</div>*@
+n
+e
+<div id="errorMsg"></div>
+<h1 data-bind="visible:isLoading">Loading...</h1>
+
+
+<h2><div class="btn btn-default " data-bind="click:runScrapingCode">Run my scraping code</div>
+</h2>
+<br /><hr>
+<h2>
+    <input type="text" data-bind="value:specialLink" />
+    <div class="btn btn-default " data-bind="click:runSpecialScrapingCode">Run Special scraping code</div>
+</h2>
+@section Styles {
+    @Styles.Render("~/plugins/slickStyles")
+    @Styles.Render("~/plugins/slickThemeStyles")
+    @Styles.Render("~/plugins/toastrStyles")
+    @Styles.Render("~/plugins/sweetAlertStyles")
+}
+
+
+@section Scripts{
+    @Scripts.Render("~/plugins/timeago")
+    @Scripts.Render("~/plugins/autosize")
+    @Scripts.Render("~/plugins/slick")
+    @Scripts.Render("~/plugins/sweetAlert")
+
+    <script src="~/Scripts/app/CreateAlert.js"></script>
+    <script src="~/Scripts/app/_Truncate-knockout-binding.js"></script>
+    <script src="~/Scripts/app/GetLoginUserId.js"></script>
+
+    <script>
+      //  $(".carouselContainer").slick();
+        function viewModel() {
+            SearchingLocation();
+            CreateAlert();
+            ChatViewModel();
+            AccountViewModel();
+            var self = this;
+            self.isLoading = ko.observable(false);
+            self.specialLink = ko.observable(null);
+            self.runScript = function () {
+                self.isLoading(true);
+                toastr.info("Starting");
+                $.ajax({
+                    url: '/api/Admin/runscraping',
+                    dataType: "json",
+                    contentType: "application/json",
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+                        $("#errorMsg").text(data);
+                        self.isLoading(false);
+                        toastr.info("Done");
+                    },
+                    error: function () {
+                        self.isLoading(false);
+                        toastr.info("Error");
+                    }
+                });
+            }
+            self.runScrapingCode = function () {
+                self.isLoading(true);
+                toastr.info("Starting");
+                $.ajax({
+                    url: '/Admin/runScrapingCode',
+                    dataType: "json",
+                    contentType: "application/json",
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+                        $("#errorMsg").text(data);
+                        self.isLoading(false);
+                        toastr.info("Done");
+                    },
+                    error: function () {
+                        self.isLoading(false);
+                        toastr.info("Error");
+                    }
+                });
+            }
+            self.runSpecialScrapingCode = function () {
+                self.isLoading(true);
+                toastr.info("Starting");
+                $.ajax({
+                    url: '/Admin/runScrapingCode?Special=Qurbani&specialLink=' + self.specialLink(),
+                    dataType: "json",
+                    contentType: "application/json",
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+                        $("#errorMsg").text(data);
+                        self.isLoading(false);
+                        toastr.info("Done");
+                    },
+                    error: function () {
+                        self.isLoading(false);
+                        toastr.info("Error");
+                    }
+                });
+            }
+        }
+        function getTimeAgo(varDate) {
+            if (varDate) {
+                return $.timeago(varDate.toString().slice(-1) == 'Z' ? varDate : varDate + 'Z');
+            }
+            else {
+                return '';
+            }
+        }
+
+        ko.bindingHandlers.jqAutoresize = {
+            init: function (element, valueAccessor, aBA, vm) {
+                if (!$(element).hasClass('msgTextArea')) {
+                    $(element).css('height', '1em');
+                }
+                $(element).autosize();
+            }
+        };
+
+        $(function () {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                preventDuplicates: true,
+                positionClass: 'toast-top-right',
+                onclick: null
+            };
+            ko.applyBindings(new viewModel);
+        });
+
+    </script>
+}
