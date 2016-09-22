@@ -1110,6 +1110,12 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
             }
             return true;
         }
+
+        public void setWidth(string width)
+        {
+            Session["BrowserWidth"] = width;
+        }
+
         private static readonly string _awsAccessKey =
             ConfigurationManager.AppSettings["AWSAccessKey"];
 

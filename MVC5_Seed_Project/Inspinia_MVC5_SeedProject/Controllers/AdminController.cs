@@ -589,6 +589,8 @@ namespace Inspinia_MVC5_SeedProject.Controllers
             return true;
         }
 
+        
+
         [HttpPost]
         public async Task<IHttpActionResult> GetAllAdmin()
         {

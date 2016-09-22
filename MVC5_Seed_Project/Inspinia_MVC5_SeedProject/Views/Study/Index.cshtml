@@ -199,6 +199,8 @@
                             <div id="q-minPrice">@minPrice</div>
                             <div id="q-maxPrice">@maxPrice</div>
                             <div id="q-condition">@condition</div>
+                            
+                            <div id="browser-width"></div>
                         </div>
                     }
 
@@ -234,11 +236,11 @@
             <br /><br />
             <div class="hidden-xs">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- testing-unit -->
-                <ins class="adsbygoogle "
+                <!-- ad-detail-page -->
+                <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
-                     data-ad-slot="5192209645"
+                     data-ad-slot="3103703247"
                      data-ad-format="auto"></ins>
                 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -258,8 +260,14 @@
                                 <a href="/Details/@ad.Id/@ad.title.GenerateSlug()" class="pull-left">
                                     <div class="product-imitation">
                                         <div class="carouselContainer">
+                                            <div runat="server">
+
+                                            </div>
                                             @if (ad.AdImages.Count != 0)
                                             {
+                                                string imgname = ConfigurationManager.AppSettings["aws"] + ConfigurationManager.AppSettings["Bucketname"] + "/" + ConfigurationManager.AppSettings["FolderName"] + (ad.Id + "_1") + ad.AdImages.FirstOrDefault().imageExtension;
+                                                System.Drawing.Image img = System.Drawing.Image.FromFile(imgname);
+
                                                 <div>
                                                     <img src="@ConfigurationManager.AppSettings["aws"]@ConfigurationManager.AppSettings["Bucketname"]/@ConfigurationManager.AppSettings["FolderName"]@(ad.Id +"_1")@ad.AdImages.FirstOrDefault().imageExtension" />
                                                 </div>
@@ -456,11 +464,11 @@ else
         }
         <div class="visible-xs">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- testing-unit -->
-            <ins class="adsbygoogle example_responsive_1"
+            <!-- ad-detail-page -->
+            <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-3540353581324370"
-                 data-ad-slot="5192209645"
+                 data-ad-slot="3103703247"
                  data-ad-format="auto"></ins>
             <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -691,6 +699,7 @@ else
             };
             ko.applyBindings(new viewModel);
             var length = $(window).width();
+            $("#browser-width").text(length);
             if (length < 786) { //770
                 $(".collapse-link").click();
                 $(".product-desc").css({ "padding": "0px" });
@@ -698,5 +707,24 @@ else
             }
         });
 
+        //window.onresize = function (event) {
+        //    SetWidthHeight();
+        //}
+        function SetWidth() {
+            var width = $(window).width();
+            $.ajax({
+                url: "admin/setWidth?width=" + width,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            }).done(function (data) {
+                alert("Done");
+            }).fail(function (xhr) {
+                alert("Problem to retrieve browser size.");
+            });
+
+        }
+        $(function () {
+            SetWidthHeight();
+        });
     </script>
 }
