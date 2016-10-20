@@ -85,15 +85,6 @@
             self.availableOptions = ["Appreciate", "Advertise on website", "Report error/bug", "How we can make it better for you"];
             self.selectedOption = ko.observable();
             self.isLoading = ko.observable(false);
-            //$('#select-brand').selectize({
-            //    create: true,
-            //    plugins: ['inputMaxlength'],
-            //    inputMaxlength: 29,
-            //    sortField: {
-            //        field: 'text',
-            //        direction: 'asc'
-            //    },
-            //});
             self.description = ko.observable();
             self.submitClicked = function () {
                 if (self.description() == null || self.description() == "" || self.description() == "undefined") {

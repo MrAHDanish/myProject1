@@ -30,7 +30,8 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         [Route("ServiceConsumers")]
         public async Task<ActionResult> ServiceConsumer()
         {
-            return View();
+            return RedirectToAction("Services", "Study");
+            //return View();
         }
         // GET: /Services/Details/5
         public async Task<ActionResult> Details(int? id)

@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Data.Entity.Validation;
 using Inspinia_MVC5_SeedProject.Models;
+using System.Text.RegularExpressions;
 
 namespace Inspinia_MVC5_SeedProject.CodeTemplates
 {
@@ -33,10 +34,21 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         //    ViewBag.category = "Vehicles";
         //    return View("Index");
         //}
-        public ActionResult Index()
+        [Route("Vehicles", Name = "Vehicles")]
+        public async Task<ActionResult> Index(string q = "", string tags = null, int minPrice = 0, int maxPrice = 50000, int? page = null)
         {
             ViewBag.category = "Vehicles";
-            return View("../Education/Categories");
+            ViewBag.subcategories = new string[] { "Cars", "Bikes", "Commercial Vehicles", "Other Vehicles", "Spare Parts" };
+            var result = await StudyController.searchResults("Vehicles", "", q, tags, minPrice, maxPrice, Session["City"] == null || Session["City"].ToString() == "All Pakistan" ? null : Session["City"].ToString());
+            var pager = new Pager(result.Count(), page);
+
+            var viewModel = new ListViewModel
+            {
+                ItemsCount = result.Count(),
+                Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
+                Pager = pager
+            };
+            return View("../Study/Index", viewModel);
         }
         [Route("Cars",Name ="Cars")]
         public async Task<ActionResult> Cars(string brand, string model, string q = "", string tags = null, int minPrice = 0, int maxPrice = 50000, bool accessories = false, string condition = null, int? page = null)
@@ -87,7 +99,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -105,7 +117,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -123,7 +135,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -141,7 +153,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -159,7 +171,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -178,7 +190,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -188,18 +200,35 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         //no need for category check
         public async Task<List<ListAdView>> searchBikes(string category, string subcategory, string brand, string model, string q = "", string tags = null, int minPrice = 0, int maxPrice = 10000, string city = null, string pp = null, int fixedMaxPrice = 10000, bool isAccessories = false, string newOrUsed = null)
         {
-            if (subcategory == "Books ")
+            if (tags != null && tags != "")
             {
-                subcategory = "Books & Study Material";
+                q = q + " " + tags;
             }
-            else if (subcategory == "Others in Education ")
+            if(model != null && model != "")
             {
-                subcategory = "Others in Education & Learning";
+                q = q + " " + model.Split('-');
             }
-            if (tags == null || tags == "")
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sale") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "is") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "for") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "i") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "a") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "an") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "want") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "buy") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sell") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "who") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "and") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "or") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "are") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "you") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "me") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "my") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            string[] q_array = q.Split(' ');
+            //   if (tags == null || tags == "")
             {
                 List<ListAdView> temp = await (from ad in db.BikeAds
-                                               where ( (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || ad.BikeModel1.model.Equals(model)) && (brand == null || brand == "" || brand == "undefined" || ad.BikeModel1.BikeBrand.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
+                                               where ((q == null || q == "" || q_array.Any(x => ad.Ad.title.Contains(x))) && (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" ||/* ad.BikeModel1.model.Equals(model)*/ true) && (brand == null || brand == "" || brand == "undefined" ||/* ad.BikeModel1.BikeBrand.brand.Equals(brand)*/ true) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
                                                orderby ad.Ad.time descending
                                                select new ListAdView
                                                {
@@ -223,7 +252,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                                                }).ToListAsync();
                 return temp;
             }
-            else
+          //  else
             {
                 string[] tagsArray = null;
                 if (tags != null)
@@ -231,7 +260,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                     tagsArray = tags.Split(',');
                 }
                 List<ListAdView> ads = await (from ad in db.BikeAds
-                                              where (  (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && (!tagsArray.Except(ad.Ad.AdTags.Select(x => x.Tag.name)).Any()) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || ad.BikeModel1.model.Equals(model)) && (brand == null || brand == "" || brand == "undefined" || ad.BikeModel1.BikeBrand.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
+                                              where (   (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && (!tagsArray.Except(ad.Ad.AdTags.Select(x => x.Tag.name)).Any()) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || ad.BikeModel1.model.Equals(model)) && (brand == null || brand == "" || brand == "undefined" || ad.BikeModel1.BikeBrand.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
                                               orderby ad.Ad.time descending
                                               select new ListAdView
                                               {
@@ -258,18 +287,35 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         }
         public async Task<List<ListAdView>> searchCars(string category, string subcategory, string brand, string model, string q = "", string tags = null, int minPrice = 0, int maxPrice = 10000, string city = null, string pp = null, int fixedMaxPrice = 10000, bool isAccessories = false, string newOrUsed = null)
         {
-            if (subcategory == "Books ")
+            if (tags != null && tags != "")
             {
-                subcategory = "Books & Study Material";
+                q = q + " " + tags;
             }
-            else if (subcategory == "Others in Education ")
+            if (model != null && model != "")
             {
-                subcategory = "Others in Education & Learning";
+                q = q + " " + model;
             }
-            if (tags == null || tags == "")
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sale") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "is") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "for") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "i") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "a") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "an") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "want") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "buy") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sell") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "who") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "and") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "or") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "are") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "you") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "me") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "my") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            string[] q_array = q.Split(' ');
+           // if (tags == null || tags == "")
             {
                 List<ListAdView> temp = await (from ad in db.CarAds
-                                               where ((newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || ad.CarModel1.model.Equals(model)) && (brand == null || brand == "" || brand == "undefined" || ad.CarModel1.CarBrand.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
+                                               where ((q == null || q == "" || q_array.Any(x => ad.Ad.title.Contains(x))) && (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || /*ad.CarModel1.model.Equals(model)*/ true) && (brand == null || brand == "" || brand == "undefined" || ad.CarModel1.CarBrand.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
                                                orderby ad.Ad.time descending
                                                select new ListAdView
                                                {
@@ -293,7 +339,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                                                }).ToListAsync();
                 return temp;
             }
-            else
+          //  else
             {
                 string[] tagsArray = null;
                 if (tags != null)

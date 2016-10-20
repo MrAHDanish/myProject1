@@ -3,6 +3,9 @@
     function commentReply(data) {
         var self = this;
         data = data || {};
+        //if (data.description != null && data.description != "") {
+        //    data.description = data.description.replace("/n", "<br/>");
+        //}
         self.description = ko.observable(data.description);
         self.postedByName = data.postedByName;
         self.postedById = data.postedById;

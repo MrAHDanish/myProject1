@@ -4,7 +4,7 @@
 @{
     Uri myUri = new Uri(Request.Url.AbsoluteUri);
     string q = HttpUtility.ParseQueryString(myUri.Query).Get("s");
-    ViewBag.metaDescription = "Search mobiles, laptops, cars, bikes, jobs and companies on dealkar.pk";
+    ViewBag.metaDescription = "Search mobiles, laptops, cars, bikes, jobs and services on dealkar.pk";
 
     try {
         string last = myUri.ToString().Substring(myUri.ToString().LastIndexOf('/') + 1);
@@ -50,7 +50,7 @@
                
                 <input type="hidden" name="minPrice" value="@minPrice" />
                 <input type="hidden" name="maxPrice" value="@maxPrice" />
-                <input type="hidden"name="tags" value="@tags" />
+                <input type="hidden" id="tags" name="tags" value="@tags" />
             </form>
             @*<input id="select-tag" name="tags" data-bind="value:selectedTag" class="repositories" placeholder="e.g, Samsung S3, ups, House for sale.." />*@
         </div>
@@ -173,8 +173,7 @@
             <br /><br />
             <div class="hidden-xs">
                 <br />
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- ad-detail-page -->
+                @*<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
@@ -182,13 +181,13 @@
                      data-ad-format="auto"></ins>
                 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                </script>*@
                 <br />
             </div>
         </div>
     </div>
     <div class="col-md-7 col-sm-8">
-        @if (Model != null)
+        @if (Model.ItemsCount > 0)
         { <text> @Model.ItemsCount  results found
         @foreach (var ad in Model.Items)
         {
@@ -347,7 +346,102 @@
         </text>
         }
         else
-        {<text>No results found. Please try something else</text>}
+        {<text><h1 class="text-center">No results found</h1> <h2>
+
+    Normally it does not happen. Please try something else.
+</h2>
+        
+        <h3 style="margin-top:200px">Why use dealkar.pk?</h3>
+        <ul>
+            <li>You can upload 30 images with an ad</li>
+            <li>Live chat between buyer and seller</li>
+            <li>If you're running a business then dealkar is for your! Create your business page and and reach the right people who love to hear from you!</li>
+            <li>Plus a lot of amazing features are coming. This is not the end. We have a long road to go!</li>
+            <li>Have a question? Write us <a href="/feedback-contact">here</a></li>
+        </ul><br />
+        <h3>Start exploring the categories:</h3>
+        <div class="row">
+            <div class="col-xs-offset-1">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-4 col-xs-6 ">
+                        <a style="width:70%" href="/MobilesTablets" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-mobile fa-4x"></i>
+                                <h3 class="m-xs">Mobiles</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6">
+                        <a style="width:70%" href="/Laptops-Computers" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-laptop fa-4x"></i>
+                                <h3 class="m-xs">Laptops</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6">
+                        <a style="width:70%" href="/Property" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-home fa-4x"></i>
+                                <h3 class="m-xs">Property</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6">
+                        <a style="width:70%" href="/Jobs" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-suitcase fa-4x"></i>
+                                <h3 class="m-xs">Jobs</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6">
+                        <a style="width:70%" href="/Services" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-cogs fa-4x"></i>
+                                <h3 class="m-xs">Services</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6">
+                        <a style="width:70%" href="/Cars" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-car fa-4x"></i>
+                                <h3 class="m-xs">Cars</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6">
+                        <a style="width:70%" href="/Bikes" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-motorcycle fa-4x"></i>
+                                <h3 class="m-xs">Bikes</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6 hidden-lg">
+                        <a style="width:70%" href="/Pets-Animals" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-paw fa-4x"></i>
+                                <h3 class="m-xs">Animals</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6 hidden-xs">
+                        <a style="width:70%" href="/Education-Learning" class="btn widget  btn-outline btn-primary">
+                            <div class="m-b-md">
+                                <i class="fa fa-mortar-board fa-4x"></i>
+                                <h3 class="m-xs">Study</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                <br /><br /><br />
+            </div>
+            <br /><br /><br />
+        </div>
+        </text>}
         <!-- pager -->
         @{ string actionLink = "q"; }
 
@@ -388,8 +482,7 @@
         }
         <div class="visible-xs">
             <br />
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- ad-detail-page -->
+            @*<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-3540353581324370"
@@ -397,7 +490,7 @@
                  data-ad-format="auto"></ins>
             <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            </script>*@
             <br />
         </div>
     </div>
@@ -593,6 +686,7 @@
             selectize_max.clear();
             minPrice = 0;
             maxPrice = 50000;
+            $("#tags").val("");
         }
         function getTimeAgo(varDate) {
             if (varDate) {

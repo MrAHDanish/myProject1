@@ -8,7 +8,7 @@
     @*<meta name="keywords" content="Classifieds, Free Classifieds, free Classified ads, Free Ads, Classifieds Pakistan, Free Advertisement, online advertisement, Car, Bikes, Mobiles, Laptops, Houses, Apartments, Jobs, Realestate, Used Stuff, Local Ads, Ads For Sale, Jobs Pakistan, IT, Marketing, Online Jobs,Pakistan, work from home,bolee, hafeezcentre, olx, dealkar, dealker, dealkr" />*@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="T7hZi6YPdzdd_bKbed1Hsq6xWxusKQNCGw0fshYoX4E" /> @*dealkar.pk*@
+    @*<meta name="google-site-verification" content="T7hZi6YPdzdd_bKbed1Hsq6xWxusKQNCGw0fshYoX4E" />*@ @*dealkar.pk*@
     @*<meta name="google-site-verification" content="orv0gPJPIeitRMIAGV_0VbMTx3DfWKJa32R4E9Vrr20" />*@ @*newtemp*@
     <link rel="icon" href="~/Images/others/favicon.png" >
     <title>
@@ -41,6 +41,8 @@
         ga('create', 'UA-74635367-2', 'auto');
         ga('send', 'pageview');
     </script>
+
+
 </head>
 <body class="fixed-sidebar fixed-nav mini-navbar">
 
@@ -70,7 +72,7 @@
 
            
 
-            @*@Html.Partial("/Views/Shared/_Chat.cshtml")*@
+            @Html.Partial("/Views/Shared/_Chat.cshtml")
             @Html.Partial("~/Views/Shared/_UserLogin.cshtml")
             <!-- Footer -->
             @Html.Partial("_Footer")
@@ -112,9 +114,9 @@
         @RenderSection("scripts", required: false)
     <script>
         $(function () {
-            $.cookie("AWSFolderName", "Items/", { path: '/' });
-            $.cookie("AWSUserFolder", "Users/", { path: '/' });
-            $.cookie("AWSCompanyFolder", "Companies/", { path: '/' });
+            $.cookie("AWSFolderName", "tempItems/", { path: '/' });
+            $.cookie("AWSUserFolder", "tempUsers/", { path: '/' });
+            $.cookie("AWSCompanyFolder", "tempCompanies/", { path: '/' });
             $.cookie("AWSURL", "https://s3.amazonaws.com/dealkar.pk/", { path: '/' });
             //  $("#side-menu").css({ "display": "block" });
             toastr.options = {

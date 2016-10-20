@@ -182,6 +182,7 @@ namespace Inspinia_MVC5_SeedProject.Models
         public int SaveAdsCount { get; set; }
         public int ReportedAdsCount { get; set; }
         public bool isReported { get; set; }
+        public bool isSaved { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
 
         public virtual ICollection<AdImage> AdImages { get; set; }

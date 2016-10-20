@@ -527,6 +527,9 @@
       <End Role="Ad" EntitySet="Ads" />
       <End Role="JobAd" EntitySet="JobAds" />
     </AssociationSet>
+    <FunctionImport Name="ad_Search" IsComposable="true" ReturnType="Collection(Model.ad_Search_Result)">
+      <Parameter Name="keyword" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="C__MigrationHistory">
     <Key>
@@ -2966,4 +2969,22 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="ad_Search_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="category" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="postedBy" Nullable="false" MaxLength="128" />
+    <Property Type="String" Name="title" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="description" Nullable="false" MaxLength="8000" />
+    <Property Type="DateTime" Name="time" Nullable="false" Precision="23" />
+    <Property Type="Decimal" Name="price" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="isnegotiable" Nullable="true" MaxLength="1" />
+    <Property Type="String" Name="subcategory" Nullable="true" MaxLength="200" />
+    <Property Type="Boolean" Name="type" Nullable="true" />
+    <Property Type="String" Name="condition" Nullable="true" MaxLength="1" />
+    <Property Type="String" Name="status" Nullable="true" MaxLength="1" />
+    <Property Type="Int32" Name="views" Nullable="false" />
+    <Property Type="String" Name="name" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="phoneNumber" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="subsubcategory" Nullable="true" MaxLength="50" />
+  </ComplexType>
 </Schema>

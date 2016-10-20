@@ -6,7 +6,7 @@
 
 
 <input type="hidden" id="tagId" value="@ViewBag.tagId" />
-
+<div style="display:none" id="tagName">@Model.name</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-md-3">
@@ -17,16 +17,15 @@
                 </div>
             </div>
             <div class="hidden-xs">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- testing-unit -->
-                <ins class="adsbygoogle "
+                @*<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
-                     data-ad-slot="5192209645"
+                     data-ad-slot="3103703247"
                      data-ad-format="auto"></ins>
                 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                </script>*@
             </div>
         </div>
         <div class="col-md-9">
@@ -93,12 +92,27 @@
                                             </div>
 
                                             <div class="panel-body">
-
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="tab-ads">
                                                         <div data-bind="foreach:showAds">
                                                             @Html.Partial("/Views/Shared/_AdListView.cshtml")
 
+                                                        </div>
+                                                        <div data-bind="visible:showAds().length == 0">
+                                                            <h1 class="text-center" style="margin-top:100px;">No results found</h1> <h2>
+
+                                                                Normally it does not happen. Please try something else.
+                                                            </h2>
+                                                            @*<h2>What are tags?</h2>
+                                                            <p></p>*@
+                                                            <h3 style="margin-top:200px">Why use dealkar.pk?</h3>
+                                                            <ul>
+                                                                <li>You can upload 30 images with an ad</li>
+                                                                <li>Live chat between buyer and seller</li>
+                                                                <li>If you're running a business then dealkar is for your! Create your business page and and reach the right people who love to hear from you!</li>
+                                                                <li>Plus a lot of amazing features are coming. This is not the end. We have a long road to go!</li>
+                                                                <li>Have a question? Write us <a href="/feedback-contact">here</a></li>
+                                                            </ul><br />
                                                         </div>
                                                     </div>
 
@@ -165,14 +179,14 @@
     .product-imitation {
         margin: 0px;
         padding: 0px;
-        width: 250px !important;
+        width: 250px;
         height: 250px;
         /apply max-padding or default image;
     }
 
     .carouselContainer img {
         // height: 350px;
-        width: 250px !important;
+        width: 250px;
         height: 250px;
     }
 
@@ -387,8 +401,9 @@
             });
             self.showTag = ko.observable();
             self.loadTag = function () {
+
                 var adId = $("#tagId").val();
-                url_address = '/api/Tag/GetTag/' + adId;
+                url_address = '/api/Tag/GetTag?id=' + adId + "&name=" + $("#tagName").text();
                 $.ajax({
                     url: url_address,
                     dataType: "json",
@@ -400,7 +415,9 @@
                     $("#FirstLoading").css({ "display": "block" });
                 })
                 .fail(function () {
+                    self.showTag("No data");
                     toastr.error("Unable to load data. Please refresh page and try again", "Error");
+                    $("#FirstLoading").css({ "display": "block" });
                 });
 
             }
@@ -467,6 +484,12 @@
                 positionClass: 'toast-top-right',
                 onclick: null
             };
+            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            if (w < 786) {
+                //$('.collapse-link').click();
+                $(".product-desc").css({ "padding": "0px" });
+                $(".product-price").css({ "color": "green", "background": "none" });
+            }
             ko.applyBindings(new viewModel);
             $.connection.hub.start().done();
         });

@@ -4,50 +4,14 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <br /> <br /><br />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="col-sm-12">
         <p>&nbsp</p>
         <div class="control-group form-horizontal">
             <label class="control-label col-sm-5" for="select-repo">What are you looking for </label>
-            @*<div id="FirstLoading" style="display:none" data-bind="visible:!isPageLoading()">*@
-               
-            @*@Html.RouteLink("submit", "search",new { s = "ab"})*@
              <div class="col-sm-5 col-md-4">
                     <form action="/q" >
                         <input placeholder="search dealkar.pk" type="text" name="s" class="form-control" />
                     </form>
-                    @*<input id="select-tag" name="tags" data-bind="value:selectedTag" class="repositories" placeholder="e.g, Samsung S3, ups, House for sale.." />*@
-                </div>
-            @*</div>*@
-            @*<div data-bind="visible:isPageLoading()">
-                <div class="sk-spinner sk-spinner-wave">
-                    <div class="sk-rect1"></div>
-                    <div class="sk-rect2"></div>
-                    <div class="sk-rect3"></div>
-                    <div class="sk-rect4"></div>
-                    <div class="sk-rect5"></div>
-                </div>
-            </div>*@
         </div>
         <p>&nbsp</p>
        
@@ -63,11 +27,6 @@
     <br />
 </span>
             <div class="row">
-              
-                
-
-
-
                 <div class="col-lg-3 col-sm-4 col-xs-6 ">
                     <a style="width:70%" href="/MobilesTablets" class="btn widget  btn-outline btn-primary">
                         <div class="m-b-md">
@@ -92,15 +51,6 @@
                                 <h3 class="m-xs">Property</h3>
                             </div>
                     </a>
-                     @*<a href="/RealEstate">
-                        <div class="widget navy-bg p-lg text-center">
-                            <div class="m-b-md">
-                                <i class="fa fa-home fa-4x"></i>
-                                <h3 class="m-xs">Real Estate</h3>
-                                <p>&nbsp;</p>
-                            </div>
-                        </div>
-                    </a>*@
                 </div>
                 <div class="col-lg-3 col-sm-4 col-xs-6">
                     <a style="width:70%" href="/Jobs"  class="btn widget  btn-outline btn-primary">
@@ -134,9 +84,6 @@
                         </div>
                     </a>
                 </div>
-                
-            @*</div>
-            <div class="row">*@
                 <div class="col-lg-3 col-sm-4 col-xs-6 hidden-lg">
             <a  style="width:70%"  href="/Pets-Animals"  class="btn widget  btn-outline btn-primary">
                     <div class="m-b-md">
@@ -149,7 +96,7 @@
             <a  style="width:70%"  href="/Education-Learning"  class="btn widget  btn-outline btn-primary">
                     <div class="m-b-md">
                         <i class="fa fa-mortar-board fa-4x"></i>
-                        <h3 class="m-xs">Study@*Books, Sports & Hobbies*@</h3>
+                        <h3 class="m-xs">Study</h3> @*<span class="badge badge-danger">Books</span>*@
                 </div>
             </a>
         </div>
@@ -254,9 +201,9 @@
 
 
 
-                            <div class="small m-t-xs" data-bind="foreach:showTags">
+                            @*<div class="small m-t-xs" data-bind="foreach:showTags">
                                 <a target="_blank" data-bind="attr:{href:'/Tag/'+name}"> <span class="btn btn-xs btn-white" data-bind="text:name"></span></a>
-                            </div>
+                            </div>*@
                             <div class="m-t text-righ">
 
                                

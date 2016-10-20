@@ -25,6 +25,7 @@ using System.Windows.Media;
 using System.IO;
 using System.Windows.Media.Imaging;
 using ImageMagick;
+using Amazon.S3.Model;
 
 namespace Inspinia_MVC5_SeedProject.CodeTemplates
 {
@@ -42,7 +43,82 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         {
             return View();
         }
+        public bool compressFilesOnAmazon()
+        {
+            // Create a client
+            string lastFileCompressed = "";
+            string error = "";
+            bool start = false;
+            try {
+                AmazonS3Config config = new AmazonS3Config();
+                config.ServiceURL = "https://s3.amazonaws.com/";
+                AmazonS3Client client = new AmazonS3Client(_awsAccessKey, _awsSecretKey, config);
+                
+                // List all objects
+                ListObjectsRequest listRequest = new ListObjectsRequest
+                {
+                    BucketName = "dealkar.pk",
+                    Prefix = "Items"
+                };
 
+                ListObjectsResponse listResponse;
+                do
+                {
+                    // Get a list of objects
+                    listResponse = client.ListObjects(listRequest);
+                    foreach (S3Object obj in listResponse.S3Objects)
+                    {
+                        if (obj.Key.EndsWith(".jpg") || obj.Key.EndsWith(".jpeg") || obj.Key.EndsWith(".png") )
+                        {
+                            if (obj.Key.EndsWith("16132_1.jpg"))
+                            {
+                                start = true;
+                            }
+                            if (start)
+                            {
+                                var webClient = new WebClient();
+                                byte[] imageBytes = webClient.DownloadData("https://s3.amazonaws.com/dealkar.pk/" + obj.Key);
+                                //apply Compression
+                                using (MagickImage sprite = new MagickImage(imageBytes))
+                                {
+                                    var width = sprite.Width;
+                                    var height = sprite.Height;
+                                    // sprite.Format = MagickFormat.Jpeg;
+                                    sprite.Quality = 70;
+                                    sprite.Resize(width, height);
+                                    System.IO.Directory.CreateDirectory(Server.MapPath(@"~\admin\Items\"));
+                                    sprite.Write(System.Web.HttpContext.Current.Server.MapPath(obj.Key));
+
+                                    Amazon.S3.IAmazonS3 s3Client = AWSClientFactory.CreateAmazonS3Client(_awsAccessKey, _awsSecretKey, config);
+
+                                    var request2 = new Amazon.S3.Model.PutObjectRequest()
+                                    {
+                                        BucketName = "dealkar.pk",
+                                        CannedACL = S3CannedACL.PublicRead,//PERMISSION TO FILE PUBLIC ACCESIBLE
+                                        Key = obj.Key,
+                                        FilePath = System.Web.HttpContext.Current.Server.MapPath(obj.Key)
+                                    };
+                                    s3Client.PutObject(request2);
+                                    if (System.IO.File.Exists(System.Web.HttpContext.Current.Server.MapPath(obj.Key)))
+                                    {
+                                        System.IO.File.Delete(System.Web.HttpContext.Current.Server.MapPath(obj.Key));
+                                        lastFileCompressed = obj.Key;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Set the marker property
+                    listRequest.Marker = listResponse.NextMarker;
+                } while (listResponse.IsTruncated);
+            }catch(Exception e)
+            {
+                error = e.ToString();
+            }
+            ElectronicsController.sendEmail("irfanyusanif@gmail.com", "File Compression status", "Last file compressed was " + lastFileCompressed + " and error is " + error + "/n and time is " + DateTime.UtcNow);
+            return true;
+        }
         //[HttpPost]
         public ActionResult ExecuteJob()
         {
@@ -92,8 +168,183 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
             }
             return false;
         }
+        public string GetModel (string title,string brand)
+        {
+            // string[] titles = title.Split(' ');
+            var allModels = db.MobileModels.Where(x => x.Mobile.brand.Equals(brand)).Select(x=>x.model);
+            // allModels.OrderByDescending(model => titles.Where(tit => tit.Equals(model, StringComparison.OrdinalIgnoreCase)).Count()).FirstOrDefault();
+             var mod = allModels.OrderByDescending(x => x.Length)
+             .FirstOrDefault(x => title.Contains(x));
+            return mod;
+        }
+        public async Task<JsonResult> scrapeJustPrice(string query = null, string brand = null, string model = null)
+        {
+            if (brand == null || brand == "")
+            {
+            //    string[] querySplit = query.Split(new Char[] { ' ', '-' },
+            //                     StringSplitOptions.RemoveEmptyEntries);
+                var allBrands = db.Mobiles.Select(x => x.brand);
+                brand = allBrands.FirstOrDefault(x => query.Contains(x));
+                model = GetModel(query, brand);
+            }
+            else if (model == null || model == "")
+            {
+                model = GetModel(query, brand);
+            }
+            int adsCount = 0;
+            var config = AngleSharp.Configuration.Default.WithDefaultLoader();
+            
+            //if(model == null || model == "")
+            //{
+            //    return Json("Error", JsonRequestBehavior.AllowGet);
+            //}
+
+            query = brand + " " + model;
+         //   query = query.Replace(' ', '+');
+            var document = await BrowsingContext.New(config).OpenAsync("http://www.justprice.pk/search_products.htm?searchWithin=&searchText=" + query);
+
+
+            var phone1Selector = ".pb-pitem-details-cnt .c-name";
+
+            var phone1cells = document.QuerySelectorAll(phone1Selector);
+            string [] titles = phone1cells.Select(m => m.GetAttribute("title")).ToArray();
+            
+            var phone1Selector1 = ".pb-pitem-details-cnt a";
+
+            var phone1cells1 = document.QuerySelectorAll(phone1Selector1);
+            string [] links = phone1cells1.Select(m => m.GetAttribute("href")).ToArray();
+
+
+            var phone1Selector2 = ".pb-pitem-details-cnt .c-price";
+
+            var phone1cells2 = document.QuerySelectorAll(phone1Selector2);
+            string [] prices = phone1cells2.Select(m => m.TextContent).ToArray();
+
+            var imagesSelector = ".img-responsive.center-block";
+            var imagesCells = document.QuerySelectorAll(imagesSelector);
+            string[] images = imagesCells.Select(m => m.GetAttribute("src")).ToArray();
+            var error = fileUploadforJustPrice(images,"NewMobiles/");
+            
+
+            string[][] Tablero = new string[titles.Count()][];
+            for (int ix = 0; ix < titles.Count(); ++ix)
+            {
+                Tablero[ix] = new string[4];
+            }
+            int indexing = 0;
+         foreach(var index in Tablero)
+            {
+                int count = 0;
+                
+                index[count++] = titles[indexing];
+                index[count++] = links[indexing].Split('/').Last();
+                index[count++] = prices[indexing];
+                index[count++] = images[indexing].Split('/').Last();
+                indexing++;
+            }
+
+            return Json(Tablero , JsonRequestBehavior.AllowGet);
+        }
+        [Route("Mobile-Prices/{url?}")]
+        public async Task<ActionResult> MobilePrices(string url)
+        {
+            string brand = url.Split('-')[0];
+            string completeUrl = "http://www.justprice.pk/" + brand + "-mobile-price-in-pakistan/" + url;
+            var config = AngleSharp.Configuration.Default.WithDefaultLoader();
+            var document = await BrowsingContext.New(config).OpenAsync(completeUrl);
+
+
+            var storeImageSelector = ".pb-product-lprice-list-item .img-responsive";
+            var storeImageCells = document.QuerySelectorAll(storeImageSelector);
+            string[] storeImages = storeImageCells.Select(m => m.GetAttribute("src")).ToArray();
+
+            var priceSelector = ".pb-pstore-price .c-price";
+            var priceCells = document.QuerySelectorAll(priceSelector);
+            string[] prices = priceCells.Select(m => m.TextContent).ToArray();
+
+            //var storeWarrantySelector = ".pb-product-lprice-list-item .fa-refresh";
+            //var storeWarrantyCells = document.QuerySelectorAll(storeWarrantySelector);
+            //string[] storeWarranty = storeWarrantyCells.Select(m => m.GetAttribute("src")).ToArray();
+
+            fileUploadforJustPrice(storeImages, "StoreImages/");
+
+            return View("../Home/temp2");
+        }
+        public object fileUploadforJustPrice(string [] paths,string folderName)
+        {
+            string[] fileNames = null;
+            bool isFound = false;
+         //   string filename = "";
+            int count = 1;
+            foreach(var path in paths)
+                if (path != "" && path != null)
+                {
+                    string fileName = path.Split('/').Last();
+                    AmazonS3Config config = new AmazonS3Config();
+                    config.ServiceURL = "https://s3.amazonaws.com/";
+                    AmazonS3Client client = new AmazonS3Client(_awsAccessKey, _awsSecretKey, config);
+
+                    // List all objects
+                    ListObjectsRequest listRequest = new ListObjectsRequest
+                    {
+                        BucketName = "dealkar.pk",
+                        Prefix = folderName+ fileName,
+                        MaxKeys = 1
+                    };
+                    ListObjectsResponse listResponse = client.ListObjects(listRequest);
+                    isFound = false;
+                    foreach (S3Object obj in listResponse.S3Objects)
+                    {
+                        if (obj.Key.EndsWith(fileName))
+                        {
+                            isFound = true;
+                        }
+                    }
+                    if (!isFound) {
+                        string localfilePath = @"\Images\" + folderName + fileName;
+                        System.IO.Directory.CreateDirectory(Server.MapPath(@"\Images\" + folderName));
+                        string completeFilePath = System.Web.HttpContext.Current.Server.MapPath(localfilePath);
+                        try
+                        {
+                            using (WebClient client1 = new WebClient())
+                            {
+                                client1.DownloadFile(path, System.Web.HttpContext.Current.Server.MapPath(localfilePath));
+                            }
+                            {
+                                {
+                                    //upload to aws
+                                    config.ServiceURL = "https://s3.amazonaws.com/";
+                                    Amazon.S3.IAmazonS3 s3Client = AWSClientFactory.CreateAmazonS3Client(_awsAccessKey, _awsSecretKey, config);
+
+                                    var request2 = new Amazon.S3.Model.PutObjectRequest()
+                                    {
+                                        BucketName = _bucketName,
+                                        CannedACL = S3CannedACL.PublicRead,//PERMISSION TO FILE PUBLIC ACCESIBLE
+                                        Key = "NewMobiles/" + fileName,
+                                        // InputStream = file.InputStream//SEND THE FILE STREAM
+                                        FilePath = System.Web.HttpContext.Current.Server.MapPath(localfilePath)
+                                    };
+                                    s3Client.PutObject(request2);
+                                    if (System.IO.File.Exists(System.Web.HttpContext.Current.Server.MapPath(localfilePath)))
+                                    {
+                                        System.IO.File.Delete(System.Web.HttpContext.Current.Server.MapPath(localfilePath));
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            string s = e.ToString();
+                            return Json(s, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+
+                }
+            return true;
+        }
         public async Task<JsonResult> runScrapingCode(string special = null,string specialLink = null)
         {
+           // deleteAds();
             int adsCount = 0;
             var config = AngleSharp.Configuration.Default.WithDefaultLoader();
             var document = await BrowsingContext.New(config).OpenAsync("https://www.olx.com.pk/all-results/?search%5Bphotos%5D=false&page=2");
@@ -112,6 +363,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
             var titleSelector = "a.detailsLink";
             var titlecells = document.QuerySelectorAll(titleSelector);
             var titles = titlecells.Select(m => m.GetAttribute("href"));
+
             string previousAdLink = null;
             foreach (var link in titles)
             {
@@ -129,9 +381,11 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                 ad = await GetAdFromOlx(ad, link, special);
                 adsCount++;
             }
+            
+            return Json(titles.Count() + " total Links" + adsCount + " posted", JsonRequestBehavior.AllowGet);
 
-
-            //var address = "https://www.olx.com.pk/item/islamic-kalma-old-coin-IDUFlmP.html#afd73d07ac";
+            //    var address = "https://www.olx.com.pk/item/islamic-kalma-old-coin-IDUFlmP.html#afd73d07ac";
+            //var address = specialLink;
             //Ad ad1 = new Ad();
             //ad1 = await GetAdFromOlx(ad1, address, null);
 
@@ -179,12 +433,14 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
             brand = brand.Trim();
             }catch(Exception e) { string s = e.ToString(); }
             //city
+           
             var cSelector = ".c2b.small";
             var ccells = document.QuerySelectorAll(cSelector);
             var c = ccells.Select(m => m.TextContent);
             string city = c.FirstOrDefault();
-            city = city.Split(',')[0];
-            city = city.Trim();
+            var city1 = db.Cities.FirstOrDefault(x => city.Contains(x.cityName)).cityName;
+          //  city = city.Split(',')[0];
+            city = city1;
             //name
             var nSelector = ".block.color-5.brkword.xx-large";
             var ncells = document.QuerySelectorAll(nSelector);
@@ -374,18 +630,38 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             return ad;
         }
+        public object deleteAds()
+        {
+            //var li = from aa in db.Ads
+            //         from city in db.Cities
+            //         where aa.category.Contains(city.cityName)
+            //         select new
+            //         {
+            //             category = aa.category,
+            //         };
 
+            var ddd = db.Ads.Where(x => db.Cities.Any(c => x.subcategory.Contains(c.cityName)));
+            int total = ddd.Count();
+            foreach(var dd in ddd)
+            {
+                db.Ads.Remove(dd);
+            }
+            db.SaveChanges();
+          return total;
+        }
         public async Task<bool> SaveCategoriesData(Ad ad, string category, string subcategory,string subsubcategory,string brand, string year, string fuelType, string Km,string rooms, string area,decimal? priceTo,string special = null)
         {
-            if(special == "Qurbani")
+            
+            if (special == "Qurbani")
             {
                 if (category == "Pets")
                 {
                     ad.category = "Animals";
                     ad.subcategory = subcategory;
                     ad.subsubcategory = "Qurbani";
+                    return true;
                 }
-                return true;
+                
             }
             if (category == "Mobiles")
             {

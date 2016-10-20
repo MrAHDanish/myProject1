@@ -14,33 +14,117 @@
     @*<h3 class="font-bold">Error</h3>*@
 
     <div class="error-desc">
-Oops! Some error has occured. Please refresh page and try again. If you are continuously seeing this page then tell us <a href="/Feedback-Contact"> here </a><br /><br /><br />
+Oops! Some error has occured. Please refresh page and try again. If you are continuously seeing this page then tell us what you are trying to open in the box below<br /><br /><br />
         <a href="@error" class="btn btn-primary btn-lg">Refresh Page</a><br /><br /><br />
         <a href="/" class="btn btn-primary btn-lg">Go to Home page</a>
-        @*<form class="form-inline m-t" role="form">
+        <br /><br /><br />
+        @using (Html.BeginForm("Feedback", "Home", FormMethod.Post, new { id = "form" }))
+        {
+
+
+            <div class="form-horizontal">
+                        <input type="hidden" name="type" value="Error Page" />
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search for page">
+                   
+                    <div class="col-xs-12">
+                        <textarea placeholder="don't tell us that refresh page is not working. Tell us which page are you trying to open" class="form-control" data-bind="value:description" rows="4" required></textarea>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>*@
+                <div class="form-group" data-bind="visible:!isLoading()">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" data-bind="click:submitClicked" value="Submit" data-style="expand-left" class="ladda-button btn btn-primary" />
+                    </div>
+                </div>
+                <div data-bind="visible:isLoading()">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                </div>
+            </div>
+        }
+
         <br /><br /><br />
         <br /><br /><br />
     </div>
+    
 </div>
+<div class="col-sm-offset-3">
+    <h3>Why use dealkar.pk?</h3>
+    <ul>
+        <li>You can upload 30 images with an ad</li>
+        <li>Live chat between buyer and seller</li>
+        <li>If you're running a business then dealkar is for your! Create your business page and and reach the right people who love to hear from you!</li>
+        <li>Plus a lot of amazing features are coming. This is not the end. We have a long road to go!</li>
+        <li>Have a question? Write us <a href="/feedback-contact">here</a></li>
+    </ul><br />
+</div>
+
+<br /><br /><br />
+<br /><br /><br />
 
 @*<h2>NotFound</h2>
     The page you are looking for is not available. Do you have any problem? Feel free to contact us!*@
 @section styles{
     @Styles.Render("~/plugins/toastrStyles")
+
+@Styles.Render("~/plugins/sweetAlertStyles")
 }
 @section Scripts{
+
+@Scripts.Render("~/plugins/sweetAlert")
     <script>
     function ViewModel() {
         SearchingLocation();
         AccountViewModel();
         ChatViewModel();
         var self = this;
-
+        self.selectedOption = ko.observable();
+        self.isLoading = ko.observable(false);
+        self.description = ko.observable();
+        self.submitClicked = function () {
+            if (self.description() == null || self.description() == "" || self.description() == "undefined") {
+                toastr.info("Please mention some detials");
+                return;
+            }
+            window.btn_clicked = true;
+            //  $("#form").submit();
+            var fb = {
+                type: "Error Page",
+                description: self.description()
+            };
+            self.isLoading(true);
+            $.ajax({
+                url: '/api/Location/SubmitFeedback',
+                dataType: "json",
+                contentType: "application/json",
+                cache: false,
+                type: 'POST',
+                data: ko.toJSON(fb),
+                success: function (data) {
+                    self.isLoading(false);
+                    swal({
+                        title: "Thank You!",
+                        text: "Your feedback has been submitted!",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ok, Go to home page",
+                        closeOnConfirm: false
+                    },
+                    function () {
+                        window.location.href = "/";
+                    });
+                },
+                error: function (jqXHR, status, thrownError) {
+                    self.isLoading(false);
+                    toastr.error("failed to submit feedback.Please refresh page and try again", "Error");
+                }
+            });
+        }
     }
     $(document).ready(function () {
         ko.applyBindings(new ViewModel);

@@ -778,5 +778,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ad_Search" FunctionName="Model.Store.ad_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model.ad_Search_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="postedBy" ColumnName="postedBy" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="isnegotiable" ColumnName="isnegotiable" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="condition" ColumnName="condition" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="views" ColumnName="views" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+          <ScalarProperty Name="subsubcategory" ColumnName="subsubcategory" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

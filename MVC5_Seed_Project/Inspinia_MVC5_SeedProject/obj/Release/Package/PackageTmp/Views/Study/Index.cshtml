@@ -199,6 +199,8 @@
                             <div id="q-minPrice">@minPrice</div>
                             <div id="q-maxPrice">@maxPrice</div>
                             <div id="q-condition">@condition</div>
+                            
+                            <div id="browser-width"></div>
                         </div>
                     }
 
@@ -234,11 +236,10 @@
             <br /><br />
             <div class="hidden-xs">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- testing-unit -->
-                <ins class="adsbygoogle "
+                <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
-                     data-ad-slot="5192209645"
+                     data-ad-slot="3103703247"
                      data-ad-format="auto"></ins>
                 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -246,7 +247,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-7 col-sm-8"> @if (Model != null) { <text> @Model.ItemsCount  results found
+    <div class="col-md-7 col-sm-8"> @if (Model.ItemsCount > 0) { <text> @Model.ItemsCount  results found
         @foreach (var ad in Model.Items)
         {
             <div class="row">
@@ -258,8 +259,21 @@
                                 <a href="/Details/@ad.Id/@ad.title.GenerateSlug()" class="pull-left">
                                     <div class="product-imitation">
                                         <div class="carouselContainer">
+                                            @*<div runat="server">
+
+                                            </div>*@
                                             @if (ad.AdImages.Count != 0)
                                             {
+                                                //string imgname = ConfigurationManager.AppSettings["aws"] + ConfigurationManager.AppSettings["Bucketname"] + "/" + ConfigurationManager.AppSettings["FolderName"] + (ad.Id + "_1") + ad.AdImages.FirstOrDefault().imageExtension;
+                                                //using (WebClient req = new WebClient())
+                                                //{
+                                                // //   req.OpenRead(imgname);
+                                                //   System.Drawing.Image img12 = System.Drawing.Image.FromStream(req.OpenRead(imgname));
+                                                //    System.Drawing.Image.FromStream(img12, false, false);
+                                                //}
+
+                                                //System.Drawing.Image img = System.Drawing.Image.FromFile(imgname);
+
                                                 <div>
                                                     <img src="@ConfigurationManager.AppSettings["aws"]@ConfigurationManager.AppSettings["Bucketname"]/@ConfigurationManager.AppSettings["FolderName"]@(ad.Id +"_1")@ad.AdImages.FirstOrDefault().imageExtension" />
                                                 </div>
@@ -412,7 +426,19 @@ else
     </text>
     }
     else
-    {<text>No results found. Please try something else</text>}
+    {<text><h1 class="text-center">No results found</h1> <h2>
+
+            Normally it does not happen. Please try something else.
+        </h2>
+        <h3 style="margin-top:200px">Why use dealkar.pk?</h3>
+        <ul>
+            <li>You can upload 30 images with an ad</li>
+            <li>Live chat between buyer and seller</li>
+            <li>If you're running a business then dealkar is for your! Create your business page and and reach the right people who love to hear from you!</li>
+            <li>Plus a lot of amazing features are coming. This is not the end. We have a long road to go!</li>
+            <li>Have a question? Write us <a href="/feedback-contact">here</a></li>
+        </ul><br />
+    </text>}
 
         
 
@@ -454,18 +480,21 @@ else
 
                         <br /><br />
         }
-        <div class="visible-xs">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- testing-unit -->
-            <ins class="adsbygoogle example_responsive_1"
-                 style="display:block"
-                 data-ad-client="ca-pub-3540353581324370"
-                 data-ad-slot="5192209645"
-                 data-ad-format="auto"></ins>
-            <script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-            <br /><br />
+        <div>
+            <div>
+                <div class="visible-xs">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-3540353581324370"
+                         data-ad-slot="3103703247"
+                         data-ad-format="horizontal"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                    <br /><br />
+                </div>
+            </div>
         </div>
 </div>
 </div>
@@ -691,6 +720,7 @@ else
             };
             ko.applyBindings(new viewModel);
             var length = $(window).width();
+            $("#browser-width").text(length);
             if (length < 786) { //770
                 $(".collapse-link").click();
                 $(".product-desc").css({ "padding": "0px" });
@@ -698,5 +728,9 @@ else
             }
         });
 
+        //window.onresize = function (event) {
+        //    SetWidthHeight();
+        //}
+        
     </script>
 }

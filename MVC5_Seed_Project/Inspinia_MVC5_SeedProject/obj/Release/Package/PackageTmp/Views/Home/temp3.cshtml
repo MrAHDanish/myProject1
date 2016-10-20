@@ -1,143 +1,327 @@
-﻿<form id="my-awesome-dropzone"  data-bind="dropzone: { url: '/Electronics/Temp' }" action="@Url.Action("FileUploadHandler", "Electronics")" method="post" enctype="multipart/form-data">
-    <div data-bind="text:name"></div>
-    <input type="text" name="myName" />
-        <div data-bind="click:getList">get list</div>
-        <div id="dropzonePreview" class="dz-default dz-message">
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Landing page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>How It Works! dealkar.pk</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+    <!-- Add jQuery Style direct - used for jQGrid plugin -->
+    <link href="@Url.Content("~/Scripts/plugins/jquery-ui/jquery-ui.css")" rel="stylesheet" type="text/css" />
+
+    <!-- Primary Inspinia style -->
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/font-awesome/css")
+
+</head>
+
+<body id="page-top" class="landing-page">
+    <div class="navbar-wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">dealkar</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="page-scroll" href="#page-top">Home</a></li>
+                        <li><a class="page-scroll" href="#features">Features</a></li>
+                        <li><a class="page-scroll" href="#team">Team</a></li>
+                        <li><a class="page-scroll" href="#testimonials">Testimonials</a></li>
+                        <li><a class="page-scroll" href="#pricing">Pricing</a></li>
+                        <li><a class="page-scroll" href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#inSlider" data-slide-to="0" class="active"></li>
+            <li data-target="#inSlider" data-slide-to="1"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>
+                            We deliver<br />
+                            The best
+                        </h1>
+                        <p>Be a part of Fast Growing Classified website</p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="#" role="button">Sell Your Item</a>
+                        </p>
+                    </div>
+                    <div class="carousel-image wow zoomIn">
+                        <img src="~/Images/landing/laptop.png" alt="laptop" />
+                    </div>
+                </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back one"></div>
+
+            </div>
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption blank">
+                        <h1>Interactive <br /> Responsive Design</h1>
+                        <p>Everything at your finger tips</p>
+                        <p><a class="btn btn-lg btn-primary" href="#" role="button">Start selling</a></p>
+                    </div>
+                </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back two"></div>
+            </div>
         </div>
-        <button type="submit">Submit</button>
+        <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 
-    @*<input type="submit" />*@
-</form>
-<form action="/Electronics/Temp1" method="post">
-    <input type="text" name="myName" required />
-    <input type="hidden" name="files" id="fileNames" />
-    <input type="submit" />
-</form>
-@*<div data-bind="dropzone: { url: '/Electronics/FileUploadHandler' }"> </div>*@
-@section Styles {
-    @Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")
-}
-@section Scripts{
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"> </script>
-@Scripts.Render("~/plugins/knockout")
-    @Scripts.Render("~/plugins/dropZone")
-    <script>
-        var fileList = new Array;
-        function VM() {
-            var self = this;
-            self.name = ko.observable("Irfan");
-            self.getList = function () {
-                console.log(fileList);
-                if (isFilesUploading) {toastr.info("Please wait until images are uploaded");return;}$("input[id*='fileNames']").val(JSON.stringify(fileList));
-            }
-        };
-        $(document).ready(function () {
-            window.onbeforeunload = function (e) {
-                e = e || window.event;
-                if (e) {
-                    e.returnValue = 'Sure?';
-                }
-                return 'Sure?';
 
-            };
-            
-            ko.bindingHandlers.dropzone = {
-                init: function (element, valueAccessor) {
-                    var value = ko.unwrap(valueAccessor());
-                    
-                    var i = 1;
-                    var options = {
-                        maxFileSize: 15,
-                      //  autoProcessQueue: false,
-                        uploadMultiple: true,
-                        parallelUploads: 100,
-                        acceptedFiles: ".png, .jpg",
-                        maxFiles: 100,
-                        addRemoveLinks: true,
-                        clickable: '#dropzonePreview',
-                        init: function () {
-                            var myDropzone = this;
-                            this.on("success", function (file, serverFileName) {
-                                fileList = [];
-                                i = 1;
-                                //fileList[i] = { "serverFileName": serverFileName, "fileName": file.name, "fileId": i };
-                                console.log(serverFileName);
-                                var abc = $.map(serverFileName, function (item) { return (item); });
-                                $.each(abc, function (index, value) {
-                                    fileList[i] = { "fileName": value, "fileId": i++ };
-                                })
-                                //fileList[i] = {"fileName" :serverFileName.Message, "fileId": i};
-                                console.log(fileList);
-                               // i++;
+    
 
-                            });
-                            this.element.querySelector("button[type=submit]").addEventListener("click", function (e) {
-
-                                e.preventDefault();
-                                e.stopPropagation();
-                                var form = $(this).closest("#my-awesome-dropzone");
-                                if (form.valid() == true) {
-                                    if (myDropzone.getQueuedFiles().length > 0) {
-                                        myDropzone.processQueue();
-                                    } else {
-                                        myDropzone.uploadFiles([]); //send empty 
-                                    }
-                                }
-                            });
-                        }
-
-                    };
-
-                    $.extend(options, value);
-
-                    $(element).addClass('dropzone');
-                    new Dropzone(element, options); // jshint ignore:line
-                }
-            };
-
-            ko.applyBindings(new VM());
-            //Dropzone.options.myAwesomeDropzone = { 
-
-            //    autoProcessQueue: false,
-            //    uploadMultiple: true,
-            //    parallelUploads: 100,
-            //    maxFiles: 100,
-            //    addRemoveLinks: true,
-            //    clickable:'#dropzonePreview',
-            //    init: function () {
-            //        var myDropzone = this;
-            //        this.element.querySelector("button[type=submit]").addEventListener("click", function (e) {
-            //            e.preventDefault();
-            //            e.stopPropagation();
-            //            var form = $(this).closest("#my-awesome-dropzone");
-            //            if (form.valid() == true) {
-            //                if (myDropzone.getQueuedFiles().length > 0) {
-            //                    myDropzone.processQueue();
-            //                } else {
-            //                    myDropzone.uploadFiles([]); //send empty 
-            //                }
-            //            }
-            //        });
-            //        this.on("sendingmultiple", function () {
-            //            // Gets triggered when the form is actually being sent.
-            //            // Hide the success button or the complete form.
-            //        });
-            //        this.on("successmultiple", function (files, response) {
-            //            // Gets triggered when the files have successfully been sent.
-            //            // Redirect user or notify of success.
-            //        });
-            //        this.on("errormultiple", function (files, response) {
-            //            // Gets triggered when there was an error sending the files.
-            //            // Maybe show form again, and notify user of error
-            //        });
-            //    }
-
-            //}
-        });
+    <section class="container features">
         
+        
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>Discover great feautres</h1>
+                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+            </div>
+        </div>
+        <div class="row features-block">
+            <div class="col-lg-6 features-text wow fadeInLeft">
+                <small>INSPINIA</small>
+                <h2>Perfectly designed </h2>
+                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with latest jQuery plugins.</p>
+                <a href="" class="btn btn-primary">Learn more</a>
+            </div>
+            <div class="col-lg-6 text-right wow fadeInRight">
+                <img src="~/Images/landing/dashboard.png" alt="dashboard" class="img-responsive pull-right">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>Discover great feautres</h1>
+                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+            </div>
+        </div>
+        <div class="row features-block">
+            <div class="col-sm-6 text-right wow fadeInRight">
+                <img src="~/Images/landing/dashboard.png" alt="dashboard" class="img-responsive ">
+            </div>
+            <div class="col-sm-6 features-text wow fadeInLeft">
+                <small>INSPINIA</small>
+                <h2>Perfectly designed </h2>
+                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with latest jQuery plugins.</p>
+                <a href="" class="btn btn-primary">Learn more</a>
+            </div>
+            
+        </div>
+    </section>
+
+    
+
+    
+
+    
+
+    <section id="testimonials" class="navy-section testimonials" style="margin-top: 0">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center wow zoomIn">
+                    <i class="fa fa-comment big-icon"></i>
+                    <h1>
+                        What our users say
+                    </h1>
+                    <div class="testimonials-text">
+                        <i>"Glad to know that someone is working to change the traditional classified websites."</i>
+                    </div>
+                    <small>
+                        <strong>12.09.2016 - Shahid Abbas</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    
+
+    <section class="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="navy-line"></div>
+                    <h1>More and more extra great feautres</h1>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-bar-chart big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+                <div class="col-lg-5 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-bolt big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-clock-o big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+                <div class="col-lg-5 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-users big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    
+
+    <section id="contact" class="gray-section contact">
+        <div class="container">
+            <div class="row m-b-lg">
+                <div class="col-lg-12 text-center">
+                    <div class="navy-line"></div>
+                    <h1>Contact Us</h1>
+                    <p> Have a Question? We will love to hear from you!</p>
+                </div>
+            </div>
+            <div class="row m-b-lg">
+                <div class="col-lg-3 col-lg-offset-3">
+                    <address>
+                        <strong><span class="navy">dealkar.pk, Inc.</span></strong><br />
+                        Lahore, Pakistan<br />
+                        @*<abbr title="Phone">P:</abbr> (123) 456-7890*@
+                    </address>
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-color">
+dealkar.pk aims to connect every buyer with seller so that they can deal directly!                   </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <a href="mailto:dealkar.pk@gmail.com" class="btn btn-primary">Send us mail</a>
+                    <p class="m-t-sm">
+                        Or follow us on social platform
+                    </p>
+                    <ul class="list-inline social-icon">
+                        <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
+                    <p><strong>&copy; @DateTime.Today.Year dealkar.pk</strong><br /> A Classified website where you can buy and sell your phone, car, house, find jobs and avail services!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section for main scripts render -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('body').scrollspy({
+                target: '.navbar-fixed-top',
+                offset: 80
+            });
+
+            // Page scrolling feature
+            $('a.page-scroll').bind('click', function (event) {
+                var link = $(this);
+                $('html, body').stop().animate({
+                    scrollTop: $(link.attr('href')).offset().top - 50
+                }, 500);
+                event.preventDefault();
+                $('#navbar').collapse('hide');
+            });
+        });
+
+        var cbpAnimatedHeader = (function () {
+            var docElem = document.documentElement,
+                    header = document.querySelector('.navbar-default'),
+                    didScroll = false,
+                    changeHeaderOn = 200;
+            function init() {
+                window.addEventListener('scroll', function (event) {
+                    if (!didScroll) {
+                        didScroll = true;
+                        setTimeout(scrollPage, 250);
+                    }
+                }, false);
+            }
+            function scrollPage() {
+                var sy = scrollY();
+                if (sy >= changeHeaderOn) {
+                    $(header).addClass('navbar-scroll')
+                }
+                else {
+                    $(header).removeClass('navbar-scroll')
+                }
+                didScroll = false;
+            }
+            function scrollY() {
+                return window.pageYOffset || docElem.scrollTop;
+            }
+            init();
+
+        })();
+
     </script>
-}
 
-
-
-
+</body>
+</html>

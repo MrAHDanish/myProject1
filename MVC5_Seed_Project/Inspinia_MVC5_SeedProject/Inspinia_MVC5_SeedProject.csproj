@@ -342,6 +342,9 @@
     <Compile Include="Models\AdTag.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ad_Search_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Answer.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -674,6 +677,7 @@
     <Content Include="Images\others\1f415.png" />
     <Content Include="Images\others\favicon.png" />
     <Content Include="Images\others\bakra.jpg" />
+    <Content Include="Images\others\no_image.jpg" />
     <Content Include="Images\others\quiz-bakra.jpg" />
     <Content Include="Images\others\stars.png" />
     <Content Include="Images\others\WaterMark.png" />
@@ -793,6 +797,7 @@
     <None Include="Properties\PublishProfiles\godady.pubxml" />
     <None Include="Properties\PublishProfiles\HostDemo.pubxml" />
     <None Include="Properties\PublishProfiles\Irfan.pubxml" />
+    <None Include="Properties\PublishProfiles\newtemp.pubxml" />
     <None Include="Properties\PublishProfiles\sharpdoor.com - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\temp.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
@@ -1033,7 +1038,9 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Shared\_TopNavbar.cshtml" />

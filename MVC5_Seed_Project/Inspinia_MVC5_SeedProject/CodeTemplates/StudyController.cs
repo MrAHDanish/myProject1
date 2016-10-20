@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Inspinia_MVC5_SeedProject.Models;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Inspinia_MVC5_SeedProject.CodeTemplates
 {
@@ -39,7 +41,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         //}
         // GET: /Study/
         [Route("Services", Name = "Services")]
-        public async Task<ActionResult> Servies(string q = "", string tags = null, int minPrice = 0, int maxPrice = 10000, int? page = null)
+        public async Task<ActionResult> Services(string q = "", string tags = null, int minPrice = 0, int maxPrice = 10000, int? page = null)
         {
             string city = null;
             string pp = null;
@@ -52,7 +54,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -72,7 +74,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -88,7 +90,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -104,7 +106,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -120,7 +122,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -136,7 +138,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -152,7 +154,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -168,7 +170,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -184,7 +186,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -204,7 +206,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -220,7 +222,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -242,7 +244,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -260,7 +262,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -270,6 +272,35 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         public static async Task<List<ListAdView>> searchResults(string category, string subcategory, string q = "", string tags = null, int minPrice = 0, int maxPrice = 10000, string city = null, string pp = null,int fixedMaxPrice = 10000 ,string condition = "n",string subsubcategory = null)
         {
             Entities db = new Entities();
+            
+
+
+            if(tags != null && tags != "")
+            {
+                q = q + " "+ tags;
+            }
+             q = Regex.Replace(q, @"\b(" + string.Join("|", "sale") + @")\b", string.Empty,RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "is") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "for") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "i") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "a") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "an") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "want") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "buy") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sell") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "who") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "and") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "or") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "are") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "you") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "me") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "my") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "in") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+         //   q = Regex.Replace(q, @"\b(" + string.Join("|", "or") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            //  q =  Regex.Replace(q, "[ a | i | the |?|want | to | buy | sell | sale| for | is ]",string.Empty, RegexOptions.IgnoreCase);
+
+            string[] q_array = q.Split(' ');
+            
             if(subcategory == "Books ")
             {
                 subcategory = "Books & Study Material";
@@ -281,10 +312,11 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
             {
                 subcategory = "Games";
             }
-            if (tags == null || tags == "")
+          //  if (tags == null || tags == "")
             {
-                List<ListAdView> ads = await (from ad in db.Ads
-                                              where ((q == null || q == "" || ad.title.Contains(q) || ad.title.StartsWith(q))&& (category == null || category == "" || ad.category.Equals(category)) && (subcategory == null || subcategory == "" || subcategory == "undefined" || ad.subcategory.Equals(subcategory)) && (subsubcategory == null || subsubcategory == "" || subsubcategory == "undefined" || ad.subsubcategory.Equals(subsubcategory)) && ad.status.Equals("a") && (minPrice == 0 || ad.price > minPrice) && (maxPrice == fixedMaxPrice || ad.price < maxPrice) && (city == null || city == "undefined" || ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "undefined" || ad.AdsLocation.popularPlace.name.Equals(pp))))
+                //var data = Select * from 
+                List<ListAdView> ads = (from ad in db.Ads
+                                              where ((q == null || q == "" || q_array.Any(x=>ad.title.Contains(x))) && (category == null || category == "" || ad.category.Equals(category)) && (subcategory == null || subcategory == "" || subcategory == "undefined" || ad.subcategory.Equals(subcategory)) && (subsubcategory == null || subsubcategory == "" || subsubcategory == "undefined" || ad.subsubcategory.Equals(subsubcategory)) && ad.status.Equals("a") && (minPrice == 0 || ad.price > minPrice) && (maxPrice == fixedMaxPrice || ad.price < maxPrice) && (city == null || city == "undefined" || ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "undefined" || ad.AdsLocation.popularPlace.name.Equals(pp))))
                                               orderby ad.time descending
                                               select new ListAdView()
                                               {
@@ -309,18 +341,18 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                                                   AdTags = ad.AdTags.ToList(),
                                                   bidsCount = ad.Bids.Count,
                                                   maxBid = ad.Bids.OrderByDescending(x => x.price).FirstOrDefault()
-                                              }).ToListAsync();
+                                              }).ToList();
                 return ads;
             }
-            else
+            //else
             {
                 string[] tagsArray = null;
                 if (tags != null)
                 {
                     tagsArray = tags.Split(',');
                 }
-                List<ListAdView> ads = await (from ad in db.Ads
-                                              where (ad.category.Equals(category) && (!tagsArray.Except(ad.AdTags.Select(x => x.Tag.name)).Any()) && (subcategory == null || subcategory == "undefined" || ad.subcategory.Equals(subcategory)) && ad.status.Equals("a") && (minPrice == 0 || ad.price > minPrice) && (maxPrice == fixedMaxPrice || ad.price < maxPrice) && (city == null || city == "undefined" || ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "undefined" || ad.AdsLocation.popularPlace.name.Equals(pp))))
+                List<ListAdView> ads =  (from ad in db.Ads
+                                               where ((q == null || q == "" || q_array.Any(x => ad.title.Contains(x))) && (!tagsArray.Except(ad.AdTags.Select(x => x.Tag.name)).Any()) && (category == null || category == "" || ad.category.Equals(category)) && (subcategory == null || subcategory == "" || subcategory == "undefined" || ad.subcategory.Equals(subcategory)) && (subsubcategory == null || subsubcategory == "" || subsubcategory == "undefined" || ad.subsubcategory.Equals(subsubcategory)) && ad.status.Equals("a") && (minPrice == 0 || ad.price > minPrice) && (maxPrice == fixedMaxPrice || ad.price < maxPrice) && (city == null || city == "undefined" || ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "undefined" || ad.AdsLocation.popularPlace.name.Equals(pp))))
                                               orderby ad.time descending
                                               select new ListAdView()
                                               {
@@ -345,7 +377,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                                                   AdTags = ad.AdTags.ToList(),
                                                   bidsCount = ad.Bids.Count,
                                                   maxBid = ad.Bids.OrderByDescending(x=>x.price).FirstOrDefault()
-                                              }).ToListAsync();
+                                              }).ToList();
                 return ads;
             }
         }
@@ -360,7 +392,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -376,7 +408,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -392,7 +424,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -408,7 +440,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -426,7 +458,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -442,7 +474,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -458,7 +490,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -475,7 +507,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -492,7 +524,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -509,7 +541,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -526,7 +558,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -542,7 +574,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };

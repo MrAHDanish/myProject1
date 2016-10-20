@@ -2218,6 +2218,31 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="ad_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="postedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="8000" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="isnegotiable" Type="char" MaxLength="1" />
+          <Property Name="subcategory" Type="nvarchar" MaxLength="200" />
+          <Property Name="type" Type="bit" />
+          <Property Name="condition" Type="char" MaxLength="1" />
+          <Property Name="status" Type="char" MaxLength="1" />
+          <Property Name="views" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" />
+          <Property Name="phoneNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="subsubcategory" Type="nvarchar" MaxLength="50" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Ad" EntityType="Self.Ad" Schema="dbo" store:Type="Tables" />

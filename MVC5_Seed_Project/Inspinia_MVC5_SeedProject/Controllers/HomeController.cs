@@ -76,11 +76,11 @@ namespace Inspinia_MVC5_SeedProject.Controllers
         {
             return View();
         }
-        //[Route("CoFounder")]
-        //public ActionResult Cofounder()
-        //{
-        //    return View();
-        //}
+        [Route("CoFounder")]
+        public ActionResult Cofounder()
+        {
+            return RedirectToAction("Index", "Home");
+        }
         public ActionResult Create(string category, string subcategory = null)
         {
             if (Request.IsAuthenticated)
@@ -287,9 +287,8 @@ namespace Inspinia_MVC5_SeedProject.Controllers
         {
             return View();
         }
-        public ActionResult temp3(int id)
+        public ActionResult temp3()
         {
-            ViewBag.adId = id;
             return View();
         }
         

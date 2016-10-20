@@ -111,8 +111,7 @@
             @Html.Partial("/Views/Shared/_CreateAlert.cshtml")
             <div class="hidden-xs">
                 <br />
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- ad-detail-page -->
+                @*<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
@@ -120,7 +119,7 @@
                      data-ad-format="auto"></ins>
                 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                </script>*@
             </div>
         </div>
         <div class="col-sm-8 col-md-9 col-lg-7">
@@ -140,7 +139,7 @@
                     </span>
                     <span data-bind="visible:searchingCity"> from <b> <span data-bind="visible:searchingPP"><span data-bind="text:searchingPP"></span>,</span> <span data-bind="text:searchingCity"></span> </b> </span>*@
                 <div class="">
-                    @if (Model != null)
+                    @if (Model.ItemsCount > 0)
                     { <text> @Model.ItemsCount  results found
                     @foreach (var ad in Model.Items)
                     {
@@ -306,7 +305,19 @@
                     </text>
                     }
                     else
-                    {<text>No results found. Please try something else</text>}
+                    {<text><h1 class="text-center">No results found</h1> <h2>
+
+                            Normally it does not happen. Please try something else.
+                        </h2>
+                        <h3 style="margin-top:200px">Why use dealkar.pk?</h3>
+                        <ul>
+                            <li>You can upload 30 images with an ad</li>
+                            <li>Live chat between buyer and seller</li>
+                            <li>If you're running a business then dealkar is for your! Create your business page and and reach the right people who love to hear from you!</li>
+                            <li>Plus a lot of amazing features are coming. This is not the end. We have a long road to go!</li>
+                            <li>Have a question? Write us <a href="/feedback-contact">here</a></li>
+                        </ul><br />
+                    </text>}
                     <!-- pager -->
                     @if (Model.Pager.EndPage > 1)
                     {
@@ -347,8 +358,7 @@
                     <br /><br />
                     <div class="visible-xs">
 
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- ad-detail-page -->
+                        @*<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <ins class="adsbygoogle"
                              style="display:block"
                              data-ad-client="ca-pub-3540353581324370"
@@ -356,7 +366,7 @@
                              data-ad-format="auto"></ins>
                         <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
+                        </script>*@
                     </div>
                     <br /><br />
                 </div>

@@ -21,7 +21,7 @@ using System.Security.Claims;
 using System.Net.Http;
 using System.Net;
 using Microsoft.Owin.Security.DataProtection;
-//using Microsoft.Owin.Security.DataProtection;
+using Microsoft.Owin.Security.OAuth;
 namespace Inspinia_MVC5_SeedProject
 {
     public partial class Startup
@@ -42,6 +42,8 @@ namespace Inspinia_MVC5_SeedProject
                     regenerateIdentity: (manager, user) => manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie))
                 }
             });
+
+           
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
@@ -130,6 +132,9 @@ namespace Inspinia_MVC5_SeedProject
             
             //app.UseGoogleAuthentication();
         }
+        //outh start
+        
+        //outh end
     }
     public class FacebookBackChannelHandler : HttpClientHandler
     {

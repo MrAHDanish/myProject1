@@ -119,16 +119,13 @@
             <div class="hidden-xs">
                 <br />
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- testing-unit -->
-                <ins class="adsbygoogle "
+                <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
-                     data-ad-slot="5192209645"
+                     data-ad-slot="3103703247"
                      data-ad-format="auto"></ins>
                 <script>
-(
-                    
-                     = window.adsbygoogle || []).push({});
+(adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
         </div>
@@ -169,7 +166,7 @@ else if (ViewBag.subcategory == "Pets Animals")
 {
     <a data-bind="click:function(){ return createAd('/Home/Create?category=Animals')}" data-style="expand-left" class="pull-right btn btn-danger">Sell your Pet</a>
 }*@           
-                    @if (Model != null)
+                    @if (Model.ItemsCount > 0)
                     { <text> @Model.ItemsCount  results found
                     @foreach (var ad in Model.Items)
                     {
@@ -330,7 +327,19 @@ else if (ViewBag.subcategory == "Pets Animals")
                     </text>
                     }
                     else
-                    {<text>No results found. Please try something else</text>}
+                    {<text><h1 class="text-center">No results found</h1> <h2>
+
+                    Normally it does not happen. Please try something else.
+                </h2>
+                <h3 style="margin-top:200px">Why use dealkar.pk?</h3>
+                <ul>
+                    <li>You can upload 30 images with an ad</li>
+                    <li>Live chat between buyer and seller</li>
+                    <li>If you're running a business then dealkar is for your! Create your business page and and reach the right people who love to hear from you!</li>
+                    <li>Plus a lot of amazing features are coming. This is not the end. We have a long road to go!</li>
+                    <li>Have a question? Write us <a href="/feedback-contact">here</a></li>
+                </ul><br />
+                    </text>}
             
             <!-- pager -->
             @{ string actionLink = (ViewBag.subcategory == null ? StringExt.GenerateSlug(ViewBag.category) : StringExt.GenerateSlug(ViewBag.subcategory));}
@@ -372,33 +381,25 @@ else if (ViewBag.subcategory == "Pets Animals")
             }
             <div class="visible-xs">
                 <br />
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- ad-detail-page -->
-                <ins class="adsbygoogle example_responsive_1"
-                     style="display:block"
-                     data-ad-client="ca-pub-3540353581324370"
-                     data-ad-slot="3103703247"
-                     data-ad-format="auto"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-                <br />
+                <div>
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- ad-detail-page -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-3540353581324370"
+                         data-ad-slot="3103703247"
+                         data-ad-format="horizontal"></ins>
+                    <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                    <br />
+                </div>
             </div>
         </div>
         @*<div class="col-lg-3"></div>*@
     </div>
 </div>
 <style>
-    .example .pagination > li > a,
-    .example .pagination > li > span {
-        border: 1px solid #1ab394;
-    }
-
-    .pagination > li.active > a {
-        background: #1ab394;
-        color: #fff;
-    }
-
     .carouselContainer {
         overflow: hidden;
         //height:350px;
@@ -421,8 +422,11 @@ else if (ViewBag.subcategory == "Pets Animals")
 
     .carouselContainer img {
         // height: 350px;
-        width: 250px /*!important*/;
-        height: 250px;
+        width: 270px !important;
+        height: 290px !important;
+        margin-left: -20px;
+        margin-top: -20px;
+        overflow: hidden;
     }
 
     .showAds .ibox {

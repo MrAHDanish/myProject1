@@ -235,10 +235,9 @@ namespace Inspinia_MVC5_SeedProject.Controllers
             //}
         }
         [HttpGet]
-        public async Task<IHttpActionResult> SimilarData(int id, string tags, string category, string subcategory, string subsubcategory)
+        public async Task<IHttpActionResult> SimilarData(int id, string tags, string category, string subcategory, string subsubcategory,string city)
         {
-            // var city = System.Web.HttpContext.Current.Session["City"];
-            string city = null;
+            
             string pp = null;
             if (subcategory == "Books ")
             {
@@ -258,7 +257,7 @@ namespace Inspinia_MVC5_SeedProject.Controllers
             }
             if (tags == null || tags == "null" || tags == "undefined")
             {
-                var temp1 = from ad in db.Ads
+                var temp1 = from ad in db.Ads //db.ad_Search(null)
                             where ( ad.Id != id && ad.category.Equals(category) && (subcategory == null || subcategory == "null" || subcategory == "undefined" || ad.subcategory.Equals(subcategory)) && ad.status.Equals("a") && (city == null || city == "All Pakistan" || city == "undefined" || ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "undefined" || ad.AdsLocation.popularPlace.name.Equals(pp))))
                             orderby ad.time descending
                             select new

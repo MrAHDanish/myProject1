@@ -10,6 +10,8 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
 using Inspinia_MVC5_SeedProject.Models;
+using System.Text.RegularExpressions;
+
 namespace Inspinia_MVC5_SeedProject.CodeTemplates
 {
     
@@ -38,10 +40,38 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
         }
         public async Task<List<ListAdView>> searchMobiles(string brand,string model, string q = "", string tags = null, int minPrice = 0, int maxPrice = 10000, string city = null, string pp = null, int fixedMaxPrice = 10000,string category = "Mobiles", string newOrUsed = null)
         {
-            if (tags == null || tags == "")
+            if (tags != null && tags != "")
             {
+                q = q + " " + tags;
+            }
+            if(model != null && model != "")
+            {
+                q = q + " " + model;
+            }
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sale") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "is") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "for") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "i") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "a") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "an") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "want") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "buy") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "sell") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "who") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "and") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "or") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "are") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "you") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "me") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+            q = Regex.Replace(q, @"\b(" + string.Join("|", "my") + @")\b", string.Empty, RegexOptions.IgnoreCase);
+
+            string[] q_array = q.Split(' ');
+
+         //   if (tags == null || tags == "")
+            {
+                //append model in query
                 List<ListAdView> temp =await (from ad in db.MobileAds
-                                        where (ad.Ad.subcategory.Equals(category) && (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || ad.MobileModel.model.Equals(model)) && (brand == null || brand == "" || brand == "undefined" || ad.MobileModel.Mobile.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
+                                        where ((q == null || q == "" || q_array.Any(x => ad.Ad.title.Contains(x))) && ad.Ad.subcategory.Equals(category) && (newOrUsed == null || newOrUsed == "" || newOrUsed == ad.Ad.condition) && ad.Ad.status.Equals("a") && (model == null || model == "" || model == "undefined" || true /*ad.MobileModel.model.Equals(model)*/ || ad.Ad.title.Contains(model) || ad.Ad.description.Contains(model)) && (brand == null || brand == "" || brand == "undefined" || ad.MobileModel.Mobile.brand.Equals(brand)) && (minPrice == 0 || ad.Ad.price > minPrice) && (maxPrice == 50000 || ad.Ad.price < maxPrice) && (city == null || city == "" || city == "undefined" || ad.Ad.AdsLocation.City.cityName.Equals(city) && (pp == null || pp == "" || pp == "undefined" || ad.Ad.AdsLocation.popularPlace.name.Equals(pp))))
                                         orderby ad.Ad.time descending
                                         select new ListAdView
                                         {
@@ -69,7 +99,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                                         }).ToListAsync();
                 return temp;
             }
-            else
+       //     else
             {
                 string[] tagsArray = null;
                 if (tags != null)

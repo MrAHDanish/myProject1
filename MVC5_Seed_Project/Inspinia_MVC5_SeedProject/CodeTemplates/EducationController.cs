@@ -31,11 +31,20 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
      //      // return RedirectToAction("notFound","Home");
      //   }
         [Route("Electronics",Name ="Electronics")]
-        public ActionResult Categories1()
+        public async Task<ActionResult> Categories1(string q = "", string tags = null, int minPrice = 0, int maxPrice = 50000, int? page = null)
         {
             ViewBag.category = "Electronics";
+            ViewBag.subcategories = new string[] { "Laptops & Computers", "Cameras", "TV-Video-Audio", "Games","Home Appliances", "Other Electronics" };
+            var result = await StudyController.searchResults("Electronics", "", q, tags, minPrice, maxPrice, Session["City"] == null || Session["City"].ToString() == "All Pakistan" ? null : Session["City"].ToString());
+            var pager = new Pager(result.Count(), page);
 
-            return View("Categories");
+            var viewModel = new ListViewModel
+            {
+                ItemsCount = result.Count(),
+                Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
+                Pager = pager
+            };
+            return View("../Study/Index", viewModel);
         }
         [Route("Fashion",Name = "Fashion")]
         public async Task<ActionResult> homeL(string q = "", string tags = null, int minPrice = 0, int maxPrice = 50000, bool accessories = false, string condition = null, int? page = null)
@@ -51,7 +60,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -85,7 +94,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -124,7 +133,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -143,7 +152,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -161,7 +170,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -179,7 +188,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -205,7 +214,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };
@@ -244,7 +253,7 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
 
             var viewModel = new ListViewModel
             {
-                ItemsCount = result.Count,
+                ItemsCount = result.Count(),
                 Items = result.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
                 Pager = pager
             };

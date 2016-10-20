@@ -16,12 +16,7 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li>
-                            <a href="/q">Search Ads</a>
-                        </li>
-                        <li>
-                            <a href="/CreateAd">Post Ad</a>
-                        </li>
+                       
                         <li>
                             <a href="/Company/Create">Create Page</a>
                         </li>
@@ -50,6 +45,12 @@
                     ABC
                 </div>*@
             </li>
+                <li class="visible-xs">
+                    <a href="/q">Search Ads <span class="label badge-primary pull-right">Buy</span></a>
+                </li>
+                <li  class="visible-xs">
+                    <a href="/CreateAd">Post Ad <span class="label badge-primary pull-right">Sell</span></a>
+                </li>
             <li class="@Html.IsSelected(controller: "MobilesTablets")">
                 <a href="@Url.Action("Index", "MobilesTablets")"><i class="fa fa-mobile fa-2x"></i> <span class="nav-label">Mobiles, Tablets</span> </a>
             </li>

@@ -12,6 +12,7 @@ using System.Web.Http.Description;
 using Inspinia_MVC5_SeedProject.Models;
 using System.Data.Entity.Validation;
 using Microsoft.AspNet.Identity;
+using System.Text.RegularExpressions;
 //using Inspinia_MVC5_SeedProject.CodeTemplates;
 namespace Inspinia_MVC5_SeedProject.Controllers
 {
@@ -22,17 +23,169 @@ namespace Inspinia_MVC5_SeedProject.Controllers
         // GET api/Tag
         public async Task<IHttpActionResult> GetTag(int id= 0,string name = null)
         {
-            if (name != null)
+            if (name != null && id == 0)
             {
                 id =await getTagIdByName(name);
+            }
+            else if((name == null || name == "") && id != 0)
+            {
+                name = db.Tags.Find(id).name;
             }
             string loginUserId = "";
             if (User.Identity.IsAuthenticated)
             {
                 loginUserId = User.Identity.GetUserId();
             }
+            string q = "";
+            string tags = name;
+            if (tags != null && tags != "")
+            {
+                q = tags;
+            }
+           
+            string[] q_array = q.Split(' ');
+            var ret1 = (from tag in db.AdTags
+                        where tag.tagId.Equals(id)
+                       
+                       select new
+                       {
+                           id = tag.Tag.Id,
+                           createdById = tag.Tag.createdBy,
+                           createdByName = tag.Tag.AspNetUser.Email,
+                           updatedById = tag.Tag.updatedBy,
+                           updatedByName = tag.Tag.AspNetUser1.Email,
+                           updatedTime = tag.Tag.updatedTime,
+                           updatedInfo = tag.Tag.updatedInfo,
+                           info = tag.Tag.info,
+                           time = tag.Tag.time,
+                           followers = tag.Tag.FollowTags.Count,
+                           isFollowed = tag.Tag.FollowTags.Any(x => x.followedBy == loginUserId),
+                           loginUserId = loginUserId,
+                           name = tag.Tag.name,
+                           isReported = tag.Tag.ReportedTags.Any(x => x.reportedBy.Equals(loginUserId)),
+                           reportedCount = tag.Tag.ReportedTags.Count,
+                           ads = (from ad in db.Ads
+                                  where (q == null || q == "" || q_array.Any(x => ad.title.Contains(x)))
+                                  orderby ad.time descending
+                                  select new
+                                 {
+                                     title = ad.title,
+                                     postedById = ad.AspNetUser.Id,
+                                     postedByName = ad.AspNetUser.Email,
+                                     description = ad.description,
+                                     id = ad.Id,
+                                     time = ad.time,
+                                     islogin = loginUserId,
+                                     isNegotiable = ad.isnegotiable,
+                                     price = ad.price,
+                                     reportedCount = ad.Reporteds.Count,
+                                     isReported = ad.Reporteds.Any(x => x.reportedBy == loginUserId),
+                                     views = ad.views,
+                                     condition = ad.condition,
+                                     category = ad.category,
+                                     color = ad.LaptopAd.color,
+                                     brand = ad.LaptopAd.LaptopModel.LaptopBrand.brand,
+                                     model = ad.LaptopAd.LaptopModel.model,
+                                     adTags = from tag1 in ad.AdTags.ToList()
+                                              select new
+                                              {
+                                                  id = tag1.tagId,
+                                                  name = tag1.Tag.name,
+                                              },
+                                     bid = from biding in ad.Bids.ToList()
+                                           select new
+                                           {
+                                               price = biding.price,
+                                           },
+                                     adImages = from image in ad.AdImages.ToList()
+                                                select new
+                                                {
+                                                    imageExtension = image.imageExtension,
+                                                },
+                                     location = new
+                                     {
+                                         cityName = ad.AdsLocation.City.cityName,
+                                         cityId = ad.AdsLocation.cityId,
+                                         popularPlaceId = ad.AdsLocation.popularPlaceId,
+                                         popularPlace = ad.AdsLocation.popularPlace.name,
+                                     },
+                                 }).Take(20),
+                       }).FirstOrDefault();
+      //      if(ret1.ads.Count() > 2)
+            {
+                return Ok(ret1);
+            }
+             ret1 = (from tag in db.AdTags
+                        where tag.tagId.Equals(id)
+
+                        select new
+                        {
+                            id = tag.Tag.Id,
+                            createdById = tag.Tag.createdBy,
+                            createdByName = tag.Tag.AspNetUser.Email,
+                            updatedById = tag.Tag.updatedBy,
+                            updatedByName = tag.Tag.AspNetUser1.Email,
+                            updatedTime = tag.Tag.updatedTime,
+                            updatedInfo = tag.Tag.updatedInfo,
+                            info = tag.Tag.info,
+                            time = tag.Tag.time,
+                            followers = tag.Tag.FollowTags.Count,
+                            isFollowed = tag.Tag.FollowTags.Any(x => x.followedBy == loginUserId),
+                            loginUserId = loginUserId,
+                            name = tag.Tag.name,
+                            isReported = tag.Tag.ReportedTags.Any(x => x.reportedBy.Equals(loginUserId)),
+                            reportedCount = tag.Tag.ReportedTags.Count,
+                            ads = (from ad in db.Ads
+                                       // where ad.tagId.Equals(id)
+                                   where (q == null || q == "" ||q_array.Any(x=>ad.title.Contains(x)))
+                                   orderby ad.time descending
+                                   select new
+                                   {
+                                       title = ad.title,
+                                       postedById = ad.AspNetUser.Id,
+                                       postedByName = ad.AspNetUser.Email,
+                                       description = ad.description,
+                                       id = ad.Id,
+                                       time = ad.time,
+                                       islogin = loginUserId,
+                                       isNegotiable = ad.isnegotiable,
+                                       price = ad.price,
+                                       reportedCount = ad.Reporteds.Count,
+                                       isReported = ad.Reporteds.Any(x => x.reportedBy == loginUserId),
+                                       views = ad.views,
+                                       condition = ad.condition,
+                                       category = ad.category,
+                                       color = ad.LaptopAd.color,
+                                       brand = ad.LaptopAd.LaptopModel.LaptopBrand.brand,
+                                       model = ad.LaptopAd.LaptopModel.model,
+                                       adTags = from tag1 in ad.AdTags.ToList()
+                                                select new
+                                                {
+                                                    id = tag1.tagId,
+                                                    name = tag1.Tag.name,
+                                                },
+                                       bid = from biding in ad.Bids.ToList()
+                                             select new
+                                             {
+                                                 price = biding.price,
+                                             },
+                                       adImages = from image in ad.AdImages.ToList()
+                                                  select new
+                                                  {
+                                                      imageExtension = image.imageExtension,
+                                                  },
+                                       location = new
+                                       {
+                                           cityName = ad.AdsLocation.City.cityName,
+                                           cityId = ad.AdsLocation.cityId,
+                                           popularPlaceId = ad.AdsLocation.popularPlaceId,
+                                           popularPlace = ad.AdsLocation.popularPlace.name,
+                                       },
+                                   }).Take(20),
+                        }).FirstOrDefault();
+            return Ok(ret1);
             var ret = await (from tag in db.Tags
-                             where tag.Id.Equals(id)
+                             where tag.AdTags.Any(x=>x.Ad.title.Contains(name)) || tag.Id.Equals(id)
                              select new
                              {
                                  id = tag.Id,
@@ -96,27 +249,27 @@ namespace Inspinia_MVC5_SeedProject.Controllers
                                                popularPlace = ad.Ad.AdsLocation.popularPlace.name,
                                            },
                                        },
-                                 questions = from question in tag.QuestionTags
-                                             where question.tagId.Equals(id)
-                                             orderby question.Question.time descending
-                                             select new
-                                             {
-                                                 title = question.Question.title,
-                                                 id = question.Question.Id,
-                                                 views = question.Question.views,
-                                                 answers = question.Question.Answers.Count(),
-                                                 voteUpCount = question.Question.QuestionVotes.Count,
-                                                 voteDownCount = question.Question.QuestionVotes.Count(x => x.isUp == false),
-                                                 time = question.Question.time,
-                                                 postedByName = question.Question.AspNetUser.Email,
-                                                 postedById = question.Question.postedBy,
-                                                 tags = from qtag in question.Question.QuestionTags
-                                                        select new
-                                                        {
-                                                            id = qtag.tagId,
-                                                            name = qtag.Tag.name,
-                                                        }
-                                             }
+                                 //questions = from question in tag.QuestionTags
+                                 //            where question.tagId.Equals(id)
+                                 //            orderby question.Question.time descending
+                                 //            select new
+                                 //            {
+                                 //                title = question.Question.title,
+                                 //                id = question.Question.Id,
+                                 //                views = question.Question.views,
+                                 //                answers = question.Question.Answers.Count(),
+                                 //                voteUpCount = question.Question.QuestionVotes.Count,
+                                 //                voteDownCount = question.Question.QuestionVotes.Count(x => x.isUp == false),
+                                 //                time = question.Question.time,
+                                 //                postedByName = question.Question.AspNetUser.Email,
+                                 //                postedById = question.Question.postedBy,
+                                 //                tags = from qtag in question.Question.QuestionTags
+                                 //                       select new
+                                 //                       {
+                                 //                           id = qtag.tagId,
+                                 //                           name = qtag.Tag.name,
+                                 //                       }
+                                 //            }
 
                              }).FirstOrDefaultAsync();
             return Ok(ret);
