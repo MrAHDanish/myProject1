@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Inspinia_MVC5_SeedProject.Models
 {
@@ -75,6 +76,25 @@ namespace Inspinia_MVC5_SeedProject.Models
         public int TotalPages { get; private set; }
         public int StartPage { get; private set; }
         public int EndPage { get; private set; }
+    }
+    public class NewMobileViewModel
+    {
+        public string name { get; set; }
+        public string spec { get; set; }
+        public string imageUrl { get; set; }
+        public string price { get; set; }
+        public virtual ICollection<MobileStoreInfo> storeInfo {get;set;}
+        //public string description { get; set; }
+
+    }
+    public class MobileStoreInfo
+    {
+        public string storeImage { get; set; }
+        public string price { get; set; }
+        public string condition { get; set; }
+        [AllowHtml]
+        public string warranty { get; set; }
+        public string inStock {get;set;}
     }
     public class ListAdView
     {

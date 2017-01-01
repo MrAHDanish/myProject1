@@ -1,0 +1,44 @@
+﻿@model Inspinia_MVC5_SeedProject.Models.NewMobileViewModel
+<div class="row">
+    <div class="ibox product-detail">
+        <div class="ibox-content">
+            @if (Model.name == null)
+            {
+                <b>This item is not available. Please try something else. We are continuously adding data so try after sometime</b>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-5">
+                        <img src="@Model.imageUrl" class="img-responsive" />
+                        <a href="/MobilesTablets/Create" class="btn btn-success btn-lg center-block">Sell @Model.name</a>
+                    </div>
+                    <div class="col-sm-7">
+                        <h2 class="font-bold m-b-xs">@Model.name</h2>
+                        <h2>@Model.price</h2>
+                        <h4>Specifications:</h4>
+                        <ul class="sortable-list connectList agile-list">@Html.Raw(Model.spec)</ul>
+                        <h5>Which stores is selling @Model.name</h5>
+                        <ul class="sortable-list connectList agile-list">
+                            @foreach (var store in Model.storeInfo)
+                            {
+                                <li>
+                                    <img src="@store.storeImage" />&nbsp;&nbsp;&nbsp;
+                                    <b>@store.price</b> <span class="visible-xs"><br /></span> &nbsp;&nbsp;&nbsp;
+                                    <span>@Html.Raw(store.inStock)</span>
+
+                                    <span class="pull-right">@Html.Raw(store.warranty.Replace("li", "i"))</span>
+
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                    <div class="row">
+                        <h4>Second hand @Model.name</h4>
+                    </div>
+            }
+        </div>
+    </div>
+</div>
+

@@ -87,6 +87,11 @@ namespace Inspinia_MVC5_SeedProject
                defaults: new { controller = "Home", action = "Search", s = UrlParameter.Optional }
            );
             routes.MapRoute(
+               name: "mobiles",
+               url: "mobiles/{s}/{s1}",
+               defaults: new { controller = "Admin", action = "detailPageData", s = UrlParameter.Optional,s1 = UrlParameter.Optional }
+           );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

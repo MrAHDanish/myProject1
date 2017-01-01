@@ -1,7 +1,15 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout_Home_Page.cshtml";
 }
-
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=159579124429445";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <div class="row wrapper border-bottom white-bg page-heading">
     <br /> <br /><br />
     <div class="col-sm-12">
@@ -261,13 +269,14 @@
                 <br /><br /><br /><br /><br />
 
                 <h1 class="navbar-brand logo-name">dealkar.pk</h1><br /><br /><br /><br /><br />
-                <h1 style="font-size:26px" class="vote-info navbar-brand"> Wait na kar, deal kar &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="list-inline social-icon">
-    <li>
+                <h1 style="font-size:26px" class="vote-info navbar-brand"> Wait na kar, deal kar &nbsp; <span class="list-inline social-icon">
+                                                                                                                                                                  <div class="fb-like" data-href="https://www.facebook.com/dealkar.pk/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>
+                     @*<li>
         <a target="_blank" href="https://twitter.com/dealkarpk"><i class="fa fa-twitter fa-2x"></i></a>
     </li>
     <li>
         <a target="_blank" href="https://www.facebook.com/dealkar.pk/"><i class="fa fa-facebook fa-2x"></i></a>
-    </li>
+    </li>*@
     @*<li>
         <a target="_blank" href="#"><i class="fa fa-linkedin"></i></a>
     </li>*@

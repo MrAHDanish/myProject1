@@ -18,7 +18,7 @@
         }
     }
     string freindlyCity = Session["City"] == null ? " in Pakistan" : " in " + Session["City"].ToString();
-    ViewBag.metaDescription = "Looking for used mobiles? Browse thousands of new and used mobiels at cheap prices" + freindlyCity;
+    ViewBag.metaDescription = "Looking for used mobiles? Browse thousands of new and used mobiles at cheap prices" + freindlyCity;
     ViewBag.Title = conditionTitle + HttpUtility.ParseQueryString(myUri.Query).Get("brand") +" " + HttpUtility.ParseQueryString(myUri.Query).Get("model") + " " + (ViewBag.subcategory == null ? ViewBag.category : ViewBag.subcategory) + (Session["City"] == null || Session["City"].ToString() == "All Pakistan" ? ""  : " in " + Session["City"].ToString());
 }
 
@@ -101,15 +101,29 @@
                     
                 </div>
             </div>
+            <div class="visible-xs">
+                <br />
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- mobiles-search-page-xs -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-3540353581324370"
+                     data-ad-slot="3290852846"
+                     data-ad-format="auto"></ins>
+                <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                <br />
+            </div>
             @Html.Partial("/Views/Shared/_CreateAlert.cshtml")
             <div class="hidden-xs">
                 <br />
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- ad-detail-page -->
+                <!-- mobiles-search-page -->
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-3540353581324370"
-                     data-ad-slot="3103703247"
+                     data-ad-slot="1814119642"
                      data-ad-format="auto"></ins>
                 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -356,20 +370,7 @@
                         <br /><br />
                     }		
                 </div>
-                <div class="visible-xs">
-                    <br />
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <!-- ad-detail-page -->
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-3540353581324370"
-                         data-ad-slot="3103703247"
-                         data-ad-format="horizontal"></ins>
-                    <script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                    <br />
-                </div>
+                
             </div>
         </div>
         @*<div class="col-lg-3"></div>*@

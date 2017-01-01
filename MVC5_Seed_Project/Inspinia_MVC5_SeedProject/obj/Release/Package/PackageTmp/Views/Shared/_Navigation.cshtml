@@ -49,7 +49,14 @@
                     <a href="/q">Search Ads <span class="label badge-primary pull-right">Buy</span></a>
                 </li>
                 <li  class="visible-xs">
+                    @if (Request.IsAuthenticated)
+                    {
                     <a href="/CreateAd">Post Ad <span class="label badge-primary pull-right">Sell</span></a>
+                    }
+                    else
+                    {
+                        <a data-bind="click:loginBtn">Post Ad <span class="label badge-primary pull-right">Sell</span></a>
+                    }
                 </li>
             <li class="@Html.IsSelected(controller: "MobilesTablets")">
                 <a href="@Url.Action("Index", "MobilesTablets")"><i class="fa fa-mobile fa-2x"></i> <span class="nav-label">Mobiles, Tablets</span> </a>

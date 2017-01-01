@@ -1230,6 +1230,8 @@
     <Content Include="Views\Home\Ambassador.cshtml" />
     <Content Include="Views\Study\Bakra.cshtml" />
     <Content Include="Views\Admin\ApplyLogoToImage.cshtml" />
+    <Content Include="Views\MobilesTablets\NewMobiles.cshtml" />
+    <Content Include="Views\MobilesTablets\_NewMobileData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

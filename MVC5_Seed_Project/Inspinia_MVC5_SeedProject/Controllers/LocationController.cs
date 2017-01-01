@@ -28,6 +28,7 @@ namespace Inspinia_MVC5_SeedProject.Controllers
                     fb.time = DateTime.UtcNow;
                     db.Feedbacks.Add(fb);
                     await db.SaveChangesAsync();
+                    ElectronicsController.sendEmail("irfanyusanif@gmail.com", "dealkar.pk feedback", "From: " + fb.givenBy + "       Time:" + fb.time + "        " + fb.description);
                     return Ok("Done");
                 }
             }

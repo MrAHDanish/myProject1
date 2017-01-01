@@ -177,6 +177,149 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
              .FirstOrDefault(x => title.Contains(x));
             return mod;
         }
+        public async Task<ActionResult> detailPageData(string link)
+        {
+            NewMobileViewModel mobile = new NewMobileViewModel();
+            try {
+                //change url in mvc controller
+                var config = AngleSharp.Configuration.Default.WithDefaultLoader();
+                var document = await BrowsingContext.New(config).OpenAsync("http://www.justprice.pk/" + link);
+
+                var imageCells = document.QuerySelectorAll(".owl-lazy");
+                string imageLink = imageCells.Select(m => m.GetAttribute("src")).FirstOrDefault();
+
+                var namecells = document.QuerySelectorAll("#product-name");
+                var name = namecells.Select(x => x.TextContent).FirstOrDefault();
+
+                var storeNameCells = document.QuerySelectorAll(".pb-product-lprice-list-item a img");
+                var storeImage = storeNameCells.Select(x => x.GetAttribute("src")).ToArray();
+
+                var storePriceCells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                var storePrices = storePriceCells.Select(x => x.TextContent).ToArray();
+
+                var itemSpecCells = document.QuerySelectorAll(".c-spec");
+                var storespecs = itemSpecCells.Select(x => x.InnerHtml).FirstOrDefault();
+
+                var itemMinPriceCells = document.QuerySelectorAll(".pb-product-price span");
+                var MinPrice = itemMinPriceCells.Select(x => x.InnerHtml).ToArray();
+                var price = MinPrice[2];
+
+                var warrantyCells = document.QuerySelectorAll(".pb-product-lprice-list-item .medium-3.columns:nth-child(1)");
+                var warranty = warrantyCells.Select(x => x.InnerHtml).ToArray();
+
+                MobileStoreInfo[] store = new MobileStoreInfo[storePrices.Count()];
+                for (int i = 0; i < store.Count(); i++)
+                {
+                    store[i] = new MobileStoreInfo();
+                }
+                int index = 0;
+                int index2 = 1;
+                foreach (var st in store)
+                {
+                    st.price = storePrices[index];
+                    st.storeImage = storeImage[index];
+                    st.warranty = warranty[index2].Split(new[] { "<br>" }, StringSplitOptions.None)[0].Trim();
+                    st.inStock = warranty[index2].Split(new[] { "<br>" }, StringSplitOptions.None)[2].Trim();
+                    index++;
+                    index2 = index2 + 2;
+                }
+
+                mobile.imageUrl = imageLink;
+                mobile.storeInfo = store;
+                mobile.price = price;
+                mobile.spec = storespecs;
+                mobile.name = name;
+                //var InstockCells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                //var instock = InstockCells.Select(x => x.TextContent);
+
+                //var conditioncells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                //var condition = conditioncells.Select(x => x.TextContent);
+
+                //var deliveryCells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                //var delivery = deliveryCells.Select(x => x.TextContent);
+
+                //var phone1cells = document.QuerySelectorAll(phone1Selector);
+                //string[] titles = phone1cells.Select(m => m.GetAttribute("title")).ToArray();
+                return View("../MobilesTablets/NewMobiles", mobile);
+                //return Json(mob, JsonRequestBehavior.AllowGet);
+            }catch(Exception e)
+            {
+                return View("../MobilesTablets/NewMobiles", mobile);
+            }
+        }
+        public async Task<PartialViewResult> NewMobilePartialView(string link)
+        {
+            NewMobileViewModel mobile = new NewMobileViewModel();
+            try
+            {
+                //change url in mvc controller
+                var config = AngleSharp.Configuration.Default.WithDefaultLoader();
+                var document = await BrowsingContext.New(config).OpenAsync("http://www.justprice.pk/" + link);
+
+                var imageCells = document.QuerySelectorAll(".owl-lazy");
+                string imageLink = imageCells.Select(m => m.GetAttribute("src")).FirstOrDefault();
+
+                var namecells = document.QuerySelectorAll("#product-name");
+                var name = namecells.Select(x => x.TextContent).FirstOrDefault();
+
+                var storeNameCells = document.QuerySelectorAll(".pb-product-lprice-list-item a img");
+                var storeImage = storeNameCells.Select(x => x.GetAttribute("src")).ToArray();
+
+                var storePriceCells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                var storePrices = storePriceCells.Select(x => x.TextContent).ToArray();
+
+                var itemSpecCells = document.QuerySelectorAll(".c-spec");
+                var storespecs = itemSpecCells.Select(x => x.InnerHtml).FirstOrDefault();
+
+                var itemMinPriceCells = document.QuerySelectorAll(".pb-product-price span");
+                var MinPrice = itemMinPriceCells.Select(x => x.InnerHtml).ToArray();
+                var price = MinPrice[2];
+
+                var warrantyCells = document.QuerySelectorAll(".pb-product-lprice-list-item .medium-3.columns:nth-child(1)");
+                var warranty = warrantyCells.Select(x => x.InnerHtml).ToArray();
+
+                MobileStoreInfo[] store = new MobileStoreInfo[storePrices.Count()];
+                for (int i = 0; i < store.Count(); i++)
+                {
+                    store[i] = new MobileStoreInfo();
+                }
+                int index = 0;
+                int index2 = 1;
+                foreach (var st in store)
+                {
+                    st.price = storePrices[index];
+                    st.storeImage = storeImage[index];
+                    st.warranty = warranty[index2].Split(new[] { "<br>" }, StringSplitOptions.None)[0].Trim();
+                    st.inStock = warranty[index2].Split(new[] { "<br>" }, StringSplitOptions.None)[2].Trim();
+                    index++;
+                    index2 = index2 + 2;
+                }
+
+                mobile.imageUrl = imageLink;
+                mobile.storeInfo = store;
+                mobile.price = price;
+                mobile.spec = storespecs;
+                mobile.name = name;
+                //var InstockCells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                //var instock = InstockCells.Select(x => x.TextContent);
+
+                //var conditioncells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                //var condition = conditioncells.Select(x => x.TextContent);
+
+                //var deliveryCells = document.QuerySelectorAll(".pb-product-lprice-list-item .c-price.s-price");
+                //var delivery = deliveryCells.Select(x => x.TextContent);
+
+                //var phone1cells = document.QuerySelectorAll(phone1Selector);
+                //string[] titles = phone1cells.Select(m => m.GetAttribute("title")).ToArray();
+                return PartialView("../MobilesTablets/_NewMobileData",mobile);
+                //return Json(mob, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return PartialView("../MobilesTablets/_NewMobileData", mobile);
+            }
+        }
+
         public async Task<JsonResult> scrapeJustPrice(string query = null, string brand = null, string model = null)
         {
             if (brand == null || brand == "")
@@ -380,6 +523,10 @@ namespace Inspinia_MVC5_SeedProject.CodeTemplates
                 Ad ad = new Ad();
                 ad = await GetAdFromOlx(ad, link, special);
                 adsCount++;
+                if(adsCount == 39)
+                {
+                    break;
+                }
             }
             
             return Json(titles.Count() + " total Links" + adsCount + " posted", JsonRequestBehavior.AllowGet);

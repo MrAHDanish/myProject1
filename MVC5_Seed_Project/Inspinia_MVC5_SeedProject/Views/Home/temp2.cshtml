@@ -1,16 +1,10 @@
-﻿<div class="row">
-    <div class="col-sm-6">
-        <div data-bind="foreach:showNewMobilePrices">
-            <div data-bind="text:title"></div>
-            <div data-bind="text:link"></div>
-            <a data-bind="attr:{href:'/Mobile-Prices?url=' + link},text:title"></a>
-            <div data-bind="text:price"></div>
-            <div data-bind="text:image"></div>
-        </div>
-    </div>
-</div>
+﻿<p>@{Html.RenderAction("~/CodeTemplates/MobilesTablets/NewMobilePartialView", new { link = "samsung-mobile-price-in-pakistan/samsung-galaxy-j7.m903.htm" });}</p>
 
 
+
+<hr />
+
+<br /><br /><br /><br /><br />
 
 
 @section Styles {
@@ -28,35 +22,11 @@
     <script src="~/Scripts/app/GetLoginUserId.js"></script>
 
     <script>
-        function NewMobilePrice(data) {
-            var self = this;
-            self.price = data[2];
-            self.link = data[1];
-            self.title = data[0];
-            self.image = data[3];
-        }
-        function loadnewMobilePrice(self) {
-
-            $.ajax({
-                url: '/Admin/scrapeJustPrice?query=samsung-s4-is-for-sale', //+ $title,
-                dataType: "json",
-                contentType: "application/json",
-                cache: false,
-                type: 'POST',
-                success: function (data) {
-                    var mappedads = $.map(data, function (item) { return new NewMobilePrice(item); });
-                    self.showNewMobilePrices(mappedads);
-                },
-                error: function () {
-                    toastr.info("Some error has occured. Please refresh page");
-                }
-            });
-        }
         function viewModel() {
 
             var self = this;
             self.showNewMobilePrices = ko.observableArray();
-            loadnewMobilePrice(self);
+           // loadnewMobilePrice(self);
             SearchingLocation();
             ChatViewModel();
             AccountViewModel();
